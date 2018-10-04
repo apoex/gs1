@@ -14,6 +14,8 @@ require 'gs1/gtin'
 require 'gs1/serial_number'
 require 'gs1/sscc'
 
+require 'gs1/barcode'
+
 # GS1 module.
 #
 module GS1
@@ -35,5 +37,11 @@ module GS1
 
   AI_CLASSES = GS1::Record.descendants.each_with_object({}) do |klass, hash|
     hash[klass.ai] = klass
+  end
+
+  module AIDCMarketingLevels
+    ALL = [MINIMUM = 1,
+           ENHANCED = 2,
+           HIGHEST = 3].freeze
   end
 end
