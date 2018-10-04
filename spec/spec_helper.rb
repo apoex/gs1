@@ -1,5 +1,8 @@
 require 'bundler/setup'
 
+require 'support/shared_gs1_extensions'
+require 'support/shared_gs1_validations'
+
 require 'byebug'
 require 'simplecov'
 
