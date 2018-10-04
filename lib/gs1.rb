@@ -1,6 +1,7 @@
 require 'gs1/version'
 
 require 'gs1/ai'
+require 'gs1/check_digit_calculator'
 
 require 'gs1/record'
 
