@@ -1,5 +1,7 @@
 require 'gs1/version'
 
+require 'gs1/ai'
+
 # GS1 module.
 #
 module GS1
