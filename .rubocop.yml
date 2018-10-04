@@ -1,0 +1,13 @@
+AllCops:
+  TargetRubyVersion: 2.3
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'gs1.gemspec'
+
+Metrics/LineLength:
+  Max: 120
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
