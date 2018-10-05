@@ -24,10 +24,8 @@ module GS1
   # Source: https://www.gs1.org/sites/default/files/docs/barcodes/GS1_General_Specifications.pdf
   #
   class SerialNumber < Record
-    include Extensions::String
-
-    valid_lengths 1..20
-
     AI = AI::SERIAL
+
+    validate :length, allowed: 1..20
   end
 end

@@ -35,16 +35,9 @@ module GS1
   # Source: https://www.gs1.org/sites/default/files/docs/barcodes/GS1_General_Specifications.pdf
   #
   class SSCC < Record
-    include Extensions::CheckDigitValidation
-    include Extensions::LengthValidation
-
     AI = AI::SSCC
 
-    valid_lengths [18]
-
-    def validate
-      validate_check_digit
-      validate_length
-    end
+    validate :check_digit
+    validate :length, allowed: 18
   end
 end

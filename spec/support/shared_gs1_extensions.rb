@@ -49,22 +49,8 @@ end
 RSpec.shared_examples_for 'a GS1 GTIN' do
   lengths = [8, 12, 13, 14]
 
-  include_examples 'GS1 length validations', lengths: lengths
+  include_examples 'GS1 length validations', allowed_lengths: lengths
   include_examples 'GS1 check digit validations'
-
-  describe '#to_s' do
-    subject { record.to_s }
-
-    let(:record) { described_class.new(nil) }
-
-    it 'calls to_gtin_14' do
-      allow(record).to receive(:to_gtin_14)
-
-      subject
-
-      expect(record).to have_received(:to_gtin_14)
-    end
-  end
 
   lengths.each do |length|
     describe "#to_gtin_#{length}" do
@@ -84,6 +70,20 @@ RSpec.shared_examples_for 'a GS1 GTIN' do
           is_expected.to eq('0' * length)
         end
       end
+    end
+  end
+
+  describe '#to_s' do
+    subject { record.to_s }
+
+    let(:record) { described_class.new(nil) }
+
+    it 'calls to_gtin_14' do
+      allow(record).to receive(:to_gtin_14)
+
+      subject
+
+      expect(record).to have_received(:to_gtin_14)
     end
   end
 end
