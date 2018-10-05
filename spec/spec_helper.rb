@@ -1,5 +1,14 @@
 require 'bundler/setup'
+
+require 'byebug'
+require 'simplecov'
+
+SimpleCov.start
+
 require 'gs1'
+
+require 'support/shared_gs1_extensions'
+require 'support/shared_gs1_validations'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
