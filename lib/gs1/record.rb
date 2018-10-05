@@ -2,15 +2,13 @@ module GS1
   # Base class for a GS1 record.
   #
   class Record
-    attr_reader :data, :errors
+    include Validations
+
+    attr_reader :data
 
     def initialize(data)
+      super
       @data = data
-      @errors = []
-    end
-
-    def self.valid_data?(data)
-      new(data).valid?
     end
 
     singleton_class.send(:attr_reader, :descendants)
@@ -41,20 +39,6 @@ module GS1
     def ==(other)
       self.class == other.class &&
         to_s == other.to_s
-    end
-
-    def valid?
-      errors.clear
-
-      validate
-
-      errors.empty?
-    end
-
-    protected
-
-    def validate
-      raise NotImplementedError, 'Implement #validate'
     end
   end
 end

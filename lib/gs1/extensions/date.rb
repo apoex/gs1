@@ -5,7 +5,9 @@ module GS1
     # Extension for a GS1 date. Ensures correct formating and validation.
     #
     module Date
-      include DateValidation
+      def self.included(base)
+        base.validate :date
+      end
 
       def to_s
         return data.strftime('%y%m%d') if data.is_a?(::Date)
@@ -17,10 +19,6 @@ module GS1
         return data if data.is_a?(::Date)
 
         ::Date.parse(data)
-      end
-
-      def validate
-        validate_date
       end
     end
   end

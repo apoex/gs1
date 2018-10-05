@@ -4,13 +4,10 @@ module GS1
     #
     module GTIN
       def self.included(base)
-        base.extend         LengthValidation::ClassMethods
-        base.send :include, LengthValidation::InstanceMethods
-        base.send :include, CheckDigitValidation
+        base.validate :length, allowed: [8, 12, 13, 14].freeze
+        base.validate :check_digit
 
-        base.valid_lengths [8, 12, 13, 14].freeze
-
-        base.lengths.each do |length|
+        base.validation_keys[:length][:allowed].each do |length|
           define_method "to_gtin_#{length}" do
             data.to_s.rjust(length, '0')
           end
@@ -20,11 +17,6 @@ module GS1
       # Default to GTIN-14 since it is the most common format.
       def to_s
         to_gtin_14
-      end
-
-      def validate
-        validate_length
-        validate_check_digit
       end
     end
   end

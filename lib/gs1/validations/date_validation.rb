@@ -1,11 +1,11 @@
 require 'date'
 
 module GS1
-  module Extensions
-    # Ensures correct length validation.
+  module Validations
+    # Ensures correct date validation.
     #
     module DateValidation
-      def validate_date
+      def validate_date(_options = {})
         errors << 'Invalid date' unless valid_date?
       end
 
