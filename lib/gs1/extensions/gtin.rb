@@ -4,10 +4,10 @@ module GS1
     #
     module GTIN
       def self.included(base)
-        base.validate :length, allowed: [8, 12, 13, 14].freeze
-        base.validate :check_digit
+        base.define :check_digit
+        base.define :length, allowed: [8, 12, 13, 14].freeze
 
-        base.validation_keys[:length][:allowed].each do |length|
+        base.allowed_lengths.each do |length|
           define_method "to_gtin_#{length}" do
             data.to_s.rjust(length, '0')
           end

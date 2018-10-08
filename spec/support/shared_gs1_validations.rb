@@ -92,9 +92,8 @@ RSpec.shared_examples_for 'GS1 length validations' do |options|
     expected_edge_case_one_over = expected_allowed_lengths.last + 1
 
     let(:record) { described_class.new(data) }
-    let(:allowed) { described_class.validation_keys[:length][:allowed] }
 
-    before { record.validate_length(allowed: allowed) }
+    before { record.validate_length }
 
     if expected_edge_case_one_under >= 0
       context "when data is #{expected_edge_case_one_under} characters long" do

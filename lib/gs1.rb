@@ -3,6 +3,7 @@ require 'gs1/version'
 require 'gs1/ai'
 require 'gs1/check_digit_calculator'
 require 'gs1/extensions'
+require 'gs1/definitions'
 require 'gs1/validations'
 
 require 'gs1/record'

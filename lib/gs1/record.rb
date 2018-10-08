@@ -2,6 +2,7 @@ module GS1
   # Base class for a GS1 record.
   #
   class Record
+    include Definitions
     include Validations
 
     attr_reader :data

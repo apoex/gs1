@@ -6,7 +6,7 @@ module GS1
     #
     module Date
       def self.included(base)
-        base.validate :date
+        base.define :date
       end
 
       def to_s

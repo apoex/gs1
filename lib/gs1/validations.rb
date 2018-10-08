@@ -17,19 +17,6 @@ module GS1
     # Adding validation class methods.
     #
     module ClassMethods
-      attr_reader :validation_keys
-
-      VALIDATIONS = %i[check_digit date length].freeze
-
-      class UnknownValidation < StandardError; end
-
-      def validate(key, options = {})
-        raise UnknownValidation, "#{key} is not a valid validation" unless VALIDATIONS.include?(key)
-
-        @validation_keys ||= {}
-        validation_keys[key] = options
-      end
-
       def valid_data?(data)
         new(data).valid?
       end
@@ -53,8 +40,8 @@ module GS1
       end
 
       def validate
-        self.class.validation_keys.each do |validation_key, options|
-          public_send("validate_#{validation_key}", options)
+        self.class.definitions.each_key do |definition|
+          public_send("validate_#{definition}")
         end
       end
     end
