@@ -26,6 +26,6 @@ module GS1
   class SerialNumber < Record
     AI = AI::SERIAL
 
-    validate :length, allowed: 1..20
+    define :length, allowed: 1..20
   end
 end

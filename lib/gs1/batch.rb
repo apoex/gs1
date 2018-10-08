@@ -28,6 +28,6 @@ module GS1
   class Batch < Record
     AI = AI::BATCH_LOT
 
-    validate :length, allowed: 1..20
+    define :length, allowed: 1..20
   end
 end

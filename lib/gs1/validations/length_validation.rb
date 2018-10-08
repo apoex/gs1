@@ -3,22 +3,12 @@ module GS1
     # Ensures correct length validation.
     #
     module LengthValidation
-      def validate_length(options = {})
-        errors << 'Invalid length' unless valid_length?(options)
+      def validate_length
+        errors << 'Invalid length' unless valid_length?
       end
 
-      def valid_length?(options)
-        normalize_allowed(options[:allowed]).include?(data&.size)
-      end
-
-      private
-
-      def normalize_allowed(allowed)
-        case allowed
-        when Range then allowed.to_a
-        when Array then allowed.flatten
-        else [allowed]
-        end
+      def valid_length?
+        self.class.allowed_lengths.include?(data&.size)
       end
     end
   end

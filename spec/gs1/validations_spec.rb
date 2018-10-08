@@ -1,9 +1,9 @@
 RSpec.describe GS1::Validations do
   module GS1
     class Dummy < Record
-      validate :check_digit
-      validate :date
-      validate :length
+      define :check_digit
+      define :date
+      define :length
     end
   end
 

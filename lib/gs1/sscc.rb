@@ -37,7 +37,7 @@ module GS1
   class SSCC < Record
     AI = AI::SSCC
 
-    validate :check_digit
-    validate :length, allowed: 18
+    define :check_digit
+    define :length, allowed: 18
   end
 end

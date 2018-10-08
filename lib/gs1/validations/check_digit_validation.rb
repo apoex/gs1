@@ -3,7 +3,7 @@ module GS1
     # Ensures correct check digit validation.
     #
     module CheckDigitValidation
-      def validate_check_digit(_options = {})
+      def validate_check_digit
         errors << 'Check digit mismatch' unless valid_check_digit?
       end
 
