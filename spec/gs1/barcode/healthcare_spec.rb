@@ -14,16 +14,18 @@ RSpec.describe GS1::Barcode::Healthcare do
   let(:expiration_date_data) { double }
   let(:serial_number_data) { double }
 
-  describe '.from_scan' do
-    let(:data) { '010000001231231317181003101231231231231231231221123123' }
-
+  describe 'example scans' do
     subject { described_class.from_scan(data) }
 
-    it 'sets all attributes' do
-      expect(subject.gtin).to eq(GS1::GTIN.new('00000012312313'))
-      expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('181003'))
-      expect(subject.batch).to eq(GS1::Batch.new('12312312312312312312'))
-      expect(subject.serial_number).to eq(GS1::SerialNumber.new('123123'))
+    context "01000000123123131718100310123123123\u001E21123123" do
+      let(:data) { "01000000123123131718100310123123123\u001E21123123" }
+
+      it 'sets all attributes' do
+        expect(subject.gtin).to eq(GS1::GTIN.new('00000012312313'))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('181003'))
+        expect(subject.batch).to eq(GS1::Batch.new('123123123'))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new('123123'))
+      end
     end
   end
 
