@@ -5,7 +5,7 @@ module GS1
     module GTIN
       def self.included(base)
         base.define :check_digit
-        base.define :length, allowed: [8, 12, 13, 14].freeze
+        base.define :length, allowed: [8, 12, 13, 14].freeze, barcode: 14
 
         base.allowed_lengths.each do |length|
           define_method "to_gtin_#{length}" do

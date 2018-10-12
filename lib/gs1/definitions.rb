@@ -37,6 +37,8 @@ module GS1
       # if there is one significant allowed.
       def normalize_length_options(options)
         options[:allowed] = normalize_multiple_option(options[:allowed])
+        options[:barcode] = normalize_singlural_option(options[:barcode])
+        options[:max_barcode] = normalize_singlural_option(options[:barcode] || options[:allowed])
 
         options
       end
@@ -47,6 +49,21 @@ module GS1
         when Array then option_value
         else [option_value]
         end
+      end
+
+      def normalize_singlural_option(option_value)
+        case option_value
+        when Array then option_value.last
+        else option_value
+        end
+      end
+
+      def barcode_length
+        lengths[:barcode]
+      end
+
+      def barcode_max_length
+        lengths[:max_barcode]
       end
 
       def allowed_lengths
