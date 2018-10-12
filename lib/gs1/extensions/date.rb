@@ -7,6 +7,7 @@ module GS1
     module Date
       def self.included(base)
         base.define :date
+        base.define :length, barcode: 6
       end
 
       def to_s

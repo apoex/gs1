@@ -8,7 +8,8 @@ module GS1
       end
 
       def valid_length?
-        self.class.allowed_lengths.include?(data&.size)
+        self.class.barcode_length == data&.size ||
+          self.class.allowed_lengths.include?(data&.size)
       end
     end
   end
