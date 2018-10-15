@@ -5,5 +5,9 @@ RSpec.describe GS1::SerialNumber do
     it { is_expected.to eq(GS1::AI::SERIAL) }
   end
 
-  it_behaves_like 'a GS1 string', allowed_lengths: 1..20
+  describe 'definitions' do
+    subject { described_class }
+
+    it { is_expected.to define_allowed_length(1..20) }
+  end
 end

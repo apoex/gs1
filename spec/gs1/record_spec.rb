@@ -56,15 +56,15 @@ RSpec.describe GS1::Record do
     subject { record == other_record }
 
     module GS1
-      class Dummy < Record; end
-      class SuperDummy < Record; end
+      class RecordDummy < Record; end
+      class RecordSuperDummy < Record; end
     end
 
-    let(:record) { GS1::Dummy.new(data) }
+    let(:record) { GS1::RecordDummy.new(data) }
     let(:data) { 'data' }
 
     context 'when same class' do
-      let(:other_record) { GS1::Dummy.new(other_data) }
+      let(:other_record) { GS1::RecordDummy.new(other_data) }
 
       context 'with same data' do
         let(:other_data) { data }
@@ -84,7 +84,7 @@ RSpec.describe GS1::Record do
     end
 
     context 'when different class' do
-      let(:other_record) { GS1::SuperDummy.new(other_data) }
+      let(:other_record) { GS1::RecordSuperDummy.new(other_data) }
 
       context 'with same data' do
         let(:other_data) { data }
