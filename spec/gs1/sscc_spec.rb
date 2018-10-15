@@ -5,8 +5,10 @@ RSpec.describe GS1::SSCC do
     it { is_expected.to eq(GS1::AI::SSCC) }
   end
 
-  describe 'validations' do
-    include_examples 'GS1 check digit validations'
-    include_examples 'GS1 length validations', allowed_lengths: [18]
+  describe 'definitions' do
+    subject { described_class }
+
+    it { is_expected.to define_check_digit }
+    it { is_expected.to define_allowed_length(18) }
   end
 end

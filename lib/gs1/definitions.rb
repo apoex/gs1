@@ -45,6 +45,7 @@ module GS1
 
       def normalize_multiple_option(option_value)
         case option_value
+        when nil then nil
         when Range then option_value.to_a
         when Array then option_value
         else [option_value]

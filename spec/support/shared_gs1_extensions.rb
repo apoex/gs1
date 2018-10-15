@@ -1,5 +1,12 @@
 RSpec.shared_examples_for 'a GS1 date' do
-  include_examples 'GS1 date validations'
+  describe 'definitions' do
+    subject { described_class }
+
+    it { is_expected.to define_date }
+    it { is_expected.not_to define_allowed_length }
+    it { is_expected.to define_barcode_length(6) }
+    it { is_expected.to define_max_barcode_length(6) }
+  end
 
   describe '#to_s' do
     subject { record.to_s }
@@ -49,8 +56,13 @@ end
 RSpec.shared_examples_for 'a GS1 GTIN' do
   lengths = [8, 12, 13, 14]
 
-  include_examples 'GS1 length validations', allowed_lengths: lengths
-  include_examples 'GS1 check digit validations'
+  describe 'definitions' do
+    subject { described_class }
+
+    it { is_expected.to define_allowed_length(lengths) }
+    it { is_expected.to define_barcode_length(14) }
+    it { is_expected.to define_max_barcode_length(14) }
+  end
 
   lengths.each do |length|
     describe "#to_gtin_#{length}" do
@@ -86,8 +98,4 @@ RSpec.shared_examples_for 'a GS1 GTIN' do
       expect(record).to have_received(:to_gtin_14)
     end
   end
-end
-
-RSpec.shared_examples_for 'a GS1 string' do |options|
-  include_examples 'GS1 length validations', options
 end
