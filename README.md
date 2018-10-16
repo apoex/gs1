@@ -1,8 +1,6 @@
-# Gs1
+# GS1
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gs1`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+GS1 provides the tools to make your code GS1 compliant.
 
 ## Installation
 
@@ -22,7 +20,49 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Follow the examples below to start using the gem.
+
+### Application identifiers
+
+To access the defined application identifier:
+
+```ruby
+GS1::AI::GTIN # => "01"
+```
+
+or via the class:
+
+```ruby
+GS1::ExpirationDate::AI # => "17"
+GS1::ExpirationDate.ai # => "17"
+```
+
+To get the class from a numeric id:
+
+```ruby
+GS1::AI_CLASSES[GS1::AI::BATCH_LOT] # => "GS1::Batch"
+```
+
+### Healthcare barcodes
+
+To initialize a healthcare barcode from scan input:
+
+```ruby
+GS1::Barcode::Healthcare.from_scan("01034531200000111719112510ABCD1234\u001E2110")
+# => #<GS1::Barcode::Healthcare:0x007fe1b99ea280
+#      @gtin=#<GS1::GTIN:0x007fe1b99e9a10 @errors=[], @data="03453120000011">,
+#      @expiration_date=#<GS1::ExpirationDate:0x007fe1b99e8700 @errors=[], @data="191125">,
+#      @batch=#<GS1::Batch:0x007fe1b99e3b10 @errors=[], @data="ABCD1234">,
+#      @serial_number=#<GS1::SerialNumber:0x007fe1b99e2670 @errors=[], @data="10">,
+#      @errors=[]>
+```
+
+or just get the attributes
+
+```ruby
+GS1::Barcode::Healthcare.from_scan("01034531200000111719112510ABCD1234\u001E2110")
+# => {:gtin=>"03453120000011", :expiration_date=>"191125", :batch=>"ABCD1234", :serial_number=>"10"}
+```
 
 ## Development
 
@@ -32,7 +72,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gs1. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/apoex/gs1. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +80,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Gs1 project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/gs1/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Gs1 project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/apoex/gs1/blob/master/CODE_OF_CONDUCT.md).
