@@ -30,12 +30,22 @@ RSpec.describe GS1::Record do
   describe '#to_s' do
     subject { record.to_s }
 
-    before { allow(data).to receive(:to_s) }
+    context 'with data present' do
+      before { allow(data).to receive(:to_s) }
 
-    it 'calls #to_s on data' do
-      subject
+      it 'calls #to_s on data' do
+        subject
 
-      expect(data).to have_received(:to_s)
+        expect(data).to have_received(:to_s)
+      end
+    end
+
+    context 'without data' do
+      let(:data) { nil }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
     end
   end
 
@@ -53,7 +63,7 @@ RSpec.describe GS1::Record do
   end
 
   describe '#==' do
-    subject { record == other_record }
+    subject { record }
 
     module GS1
       class RecordDummy < Record; end
@@ -67,19 +77,15 @@ RSpec.describe GS1::Record do
       let(:other_record) { GS1::RecordDummy.new(other_data) }
 
       context 'with same data' do
-        let(:other_data) { data }
+        let(:other_data) { data.dup }
 
-        it 'is equal' do
-          is_expected.to eq(true)
-        end
+        it { is_expected.to eq(other_record) }
       end
 
       context 'with different data' do
         let(:other_data) { 'not data' }
 
-        it 'is equal' do
-          is_expected.to eq(false)
-        end
+        it { is_expected.not_to eq(other_record) }
       end
     end
 
@@ -89,17 +95,13 @@ RSpec.describe GS1::Record do
       context 'with same data' do
         let(:other_data) { data }
 
-        it 'is not equal' do
-          is_expected.to eq(false)
-        end
+        it { is_expected.not_to eq(other_record) }
       end
 
       context 'with different data' do
         let(:other_data) { 'not data' }
 
-        it 'is not equal' do
-          is_expected.to eq(false)
-        end
+        it { is_expected.not_to eq(other_record) }
       end
     end
   end
