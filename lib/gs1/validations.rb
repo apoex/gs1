@@ -25,8 +25,6 @@ module GS1
     # Adding validation instance methods.
     #
     module InstanceMethods
-      attr_reader :errors
-
       def valid?
         errors.clear
 
