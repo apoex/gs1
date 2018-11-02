@@ -8,7 +8,6 @@ module GS1
     attr_reader :data
 
     def initialize(data)
-      super
       @data = data
     end
 
@@ -48,8 +47,8 @@ module GS1
     end
 
     def ==(other)
-      self.class == other.class &&
-        to_s == other.to_s
+      self.class.equal?(other.class) &&
+        to_s.eql?(other.to_s)
     end
   end
 end
