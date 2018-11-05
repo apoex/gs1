@@ -30,32 +30,56 @@ RSpec.describe GS1::Barcode::Healthcare do
   end
 
   describe '#to_s' do
-    subject { barcode.to_s }
-
-    before do
-      expect(barcode).to receive(:valid?).with(level: level).and_return(valid)
-    end
+    let(:separator) { "\u001E" }
 
     let(:level) { GS1::AIDCMarketingLevels::ENHANCED }
 
-    context 'when valid' do
-      let(:valid) { true }
+    context 'with stubbed values' do
+      subject { barcode.to_s(separator: separator) }
 
-      it 'returns all attributes concatinated' do
-        gtin_part = "#{GS1::GTIN::AI}#{gtin_data}"
-        expiration_date_part = "#{GS1::ExpirationDate::AI}#{expiration_date_data}"
-        batch_part = "#{GS1::Batch::AI}#{batch_data}"
-        serial_number_part = "#{GS1::SerialNumber::AI}#{serial_number_data}"
+      before do
+        expect(barcode).to receive(:valid?).with(level: level).and_return(valid)
+      end
 
-        is_expected.to eq(gtin_part + expiration_date_part + batch_part + serial_number_part)
+      context 'when valid' do
+        let(:valid) { true }
+
+        it 'returns all attributes concatinated' do
+          gtin_part = "#{GS1::GTIN::AI}#{gtin_data}"
+          expiration_date_part = "#{GS1::ExpirationDate::AI}#{expiration_date_data}"
+          batch_part = "#{GS1::Batch::AI}#{batch_data}"
+          serial_number_part = "#{GS1::SerialNumber::AI}#{serial_number_data}"
+
+          is_expected.to eq(gtin_part + expiration_date_part + batch_part + separator + serial_number_part)
+        end
+      end
+
+      context 'when invalid' do
+        let(:valid) { false }
+
+        it 'returns nil' do
+          is_expected.to be_nil
+        end
       end
     end
 
-    context 'when invalid' do
-      let(:valid) { false }
+    context "when 01000000123123131718100310123123123\u001E21123123" do
+      let(:example_scan) { "01000000123123131718100310123123123\u001E21123123" }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
 
-      it 'returns nil' do
-        is_expected.to be_nil
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s).to eq example_scan
+      end
+
+      it 'is reparseable', :aggregate_failures do
+        expect { rescan }.not_to raise_error
+
+        expect(rescan.gtin).to eq subject.gtin
+        expect(rescan.batch).to eq subject.batch
+        expect(rescan.expiration_date).to eq subject.expiration_date
+        expect(rescan.serial_number).to eq subject.serial_number
       end
     end
   end
