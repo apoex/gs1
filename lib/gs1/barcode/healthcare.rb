@@ -9,9 +9,9 @@ module GS1
         return unless valid?(level: level)
 
         [gtin.to_ai,
-         expiration_date&.to_ai,
-         batch&.to_ai,
-         serial_number&.to_ai].compact.join
+         expiration_date && expiration_date.to_ai,
+         batch && batch.to_ai,
+         serial_number && serial_number.to_ai].compact.join
       end
 
       def valid?(level: AIDCMarketingLevels::ENHANCED)
@@ -41,12 +41,12 @@ module GS1
       end
 
       def validate_enhanced
-        errors << 'Invalid batch' unless batch&.valid?
-        errors << 'Invalid expiration date' unless expiration_date&.valid?
+        errors << 'Invalid batch' unless batch && batch.valid?
+        errors << 'Invalid expiration date' unless expiration_date && expiration_date.valid?
       end
 
       def validate_highest
-        errors << 'Invalid serial number' unless serial_number&.valid?
+        errors << 'Invalid serial number' unless serial_number && serial_number.valid?
       end
     end
   end

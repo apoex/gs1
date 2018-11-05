@@ -40,7 +40,7 @@ module GS1
     end
 
     def to_s
-      data&.to_s
+      data && data.to_s
     end
 
     def to_ai
