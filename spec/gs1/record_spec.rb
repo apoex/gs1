@@ -79,13 +79,17 @@ RSpec.describe GS1::Record do
       context 'with same data' do
         let(:other_data) { data.dup }
 
-        it { is_expected.to eq(other_record) }
+        it 'is equal' do
+          expect(subject).to eq(other_record)
+        end
       end
 
       context 'with different data' do
         let(:other_data) { 'not data' }
 
-        it { is_expected.not_to eq(other_record) }
+        it 'is not equal' do
+          expect(subject).not_to eq(other_record)
+        end
       end
     end
 
@@ -95,13 +99,17 @@ RSpec.describe GS1::Record do
       context 'with same data' do
         let(:other_data) { data }
 
-        it { is_expected.not_to eq(other_record) }
+        it 'is not equal' do
+          expect(subject).not_to eq(other_record)
+        end
       end
 
       context 'with different data' do
         let(:other_data) { 'not data' }
 
-        it { is_expected.not_to eq(other_record) }
+        it 'is not equal' do
+          expect(subject).not_to eq(other_record)
+        end
       end
     end
   end
