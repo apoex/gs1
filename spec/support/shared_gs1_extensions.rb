@@ -98,4 +98,18 @@ RSpec.shared_examples_for 'a GS1 GTIN' do
       expect(record).to have_received(:to_gtin_14)
     end
   end
+
+  describe '#to_ai' do
+    subject { record.to_ai }
+
+    let(:record) { described_class.new(nil) }
+
+    it 'calls to_gtin_14' do
+      allow(record).to receive(:to_gtin_14)
+
+      subject
+
+      expect(record).to have_received(:to_gtin_14)
+    end
+  end
 end
