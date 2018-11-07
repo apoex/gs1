@@ -25,18 +25,16 @@ module GS1
     # Adding validation instance methods.
     #
     module InstanceMethods
-      attr_reader :errors
-
-      def initialize(*)
-        @errors = []
-      end
-
       def valid?
         errors.clear
 
         validate
 
         errors.empty?
+      end
+
+      def errors
+        @errors ||= []
       end
 
       def validate

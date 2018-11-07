@@ -10,15 +10,15 @@ module GS1
         base.define :length, barcode: 6
       end
 
-      def to_s
-        return data.strftime('%y%m%d') if data.is_a?(::Date)
-
-        data
+      def initialize(date)
+        if date.respond_to?(:strftime)
+          super(date.strftime('%y%m%d'))
+        else
+          super(date)
+        end
       end
 
       def to_date
-        return data if data.is_a?(::Date)
-
         ::Date.parse(data)
       end
     end

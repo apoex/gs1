@@ -2,6 +2,7 @@ module GS1
   # Module for handling definitions.
   #
   module Definitions
+    class MissingLengthDefinition < StandardError; end
     class UnknownDefinition < StandardError; end
 
     def self.included(base)
@@ -72,7 +73,7 @@ module GS1
       end
 
       def lengths
-        definitions[:length]
+        definitions[:length] || raise(MissingLengthDefinition)
       end
     end
   end
