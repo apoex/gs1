@@ -25,6 +25,12 @@ module GS1
         errors.empty?
       end
 
+      def self.valid?(data, level: AIDCMarketingLevels::ENHANCED)
+        from_scan(data).valid?(level)
+      rescue UnknownRecordError
+        false
+      end
+
       private
 
       def validate(level)

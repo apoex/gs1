@@ -198,4 +198,36 @@ RSpec.describe GS1::Barcode::Healthcare do
       end
     end
   end
+
+  describe '.valid?' do
+    subject { described_class.valid?('data') }
+    let(:barcode) { double :barcode, valid?: valid }
+
+    before { allow(described_class).to receive(:from_scan).with('data').and_return(barcode) }
+    context 'when valid' do
+      let(:valid) { true }
+
+      it 'is true' do
+        expect(subject).to be true
+        expect(barcode).to have_received(:valid?).with(GS1::AIDCMarketingLevels::ENHANCED)
+      end
+    end
+
+    context 'when invalid' do
+      let(:valid) { false }
+
+      it 'is false' do
+        expect(subject).to be false
+      end
+
+      context 'when throwing an error' do
+        before { allow(described_class).to receive(:from_scan).and_raise(GS1::Barcode::Base::UnknownRecordError) }
+
+        it 'is false' do
+          expect { subject }.not_to raise_error
+          expect(subject).to be false
+        end
+      end
+    end
+  end
 end
