@@ -43,7 +43,7 @@ module GS1
     end
 
     def to_ai
-      "#{ai}#{to_s}" # rubocop:disable Lint/StringConversionInInterpolation
+      ai + to_s
     end
 
     def ==(other)

@@ -54,7 +54,7 @@ RSpec.describe GS1::Record do
 
     before do
       allow(record).to receive(:ai).and_return('AI')
-      allow(record).to receive(:data).and_return('DATA')
+      allow(record).to receive(:to_s).and_return('DATA')
     end
 
     it 'concatinates #ai and #data' do
