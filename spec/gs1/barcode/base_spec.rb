@@ -34,7 +34,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'default separator' do
-      let(:separator) { "\u001E" }
+      let(:separator) { GS1::Barcode::DEFAULT_SEPARATOR }
 
       include_examples 'sets all attributes from barcode'
     end

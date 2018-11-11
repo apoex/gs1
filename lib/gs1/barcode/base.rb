@@ -18,20 +18,20 @@ module GS1
       end
 
       class << self
-        def from_scan(barcode, separator: "\u001E")
-          new(scan_to_params(barcode, separator: separator))
-        end
-
-        def from_scan!(barcode, separator: "\u001E")
+        def from_scan!(barcode, separator: DEFAULT_SEPARATOR)
           new(scan_to_params!(barcode, separator: separator))
         end
 
-        def scan_to_params(barcode, separator: "\u001E")
-          Tokenizer.new(barcode, separator: separator).to_params
+        def from_scan(barcode, separator: DEFAULT_SEPARATOR)
+          new(scan_to_params(barcode, separator: separator))
         end
 
-        def scan_to_params!(barcode, separator: "\u001E")
+        def scan_to_params!(barcode, separator: DEFAULT_SEPARATOR)
           Tokenizer.new(barcode, separator: separator).to_params!
+        end
+
+        def scan_to_params(barcode, separator: DEFAULT_SEPARATOR)
+          Tokenizer.new(barcode, separator: separator).to_params
         end
       end
     end

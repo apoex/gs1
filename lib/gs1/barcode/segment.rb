@@ -5,7 +5,7 @@ module GS1
     class Segment
       attr_reader :data, :separator
 
-      def initialize(data, separator: "\u001E")
+      def initialize(data, separator: DEFAULT_SEPARATOR)
         @data = data.chars
         @separator = separator
       end

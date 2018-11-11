@@ -5,7 +5,7 @@ module GS1
     class Healthcare < Base
       define_records GTIN, ExpirationDate, Batch, SerialNumber
 
-      def to_s(level: AIDCMarketingLevels::ENHANCED, separator: "\u001E")
+      def to_s(level: AIDCMarketingLevels::ENHANCED, separator: DEFAULT_SEPARATOR)
         return unless valid?(level: level)
 
         [

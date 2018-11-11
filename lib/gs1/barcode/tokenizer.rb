@@ -6,7 +6,7 @@ module GS1
     class Tokenizer
       attr_reader :data, :separator, :params
 
-      def initialize(data, separator: "\u001E")
+      def initialize(data, separator: DEFAULT_SEPARATOR)
         @data = data
         @separator = separator
         @params = {}
