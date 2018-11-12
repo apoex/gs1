@@ -5,16 +5,16 @@ module GS1
     class Base
       include Definitions
 
-      attr_reader :errors
-
       def initialize(options = {})
         self.class.records.each do |record|
           data = options.fetch(record.underscore_name, nil)
 
           instance_variable_set("@#{record.underscore_name}", record.new(data))
         end
+      end
 
-        @errors = []
+      def errors
+        @errors ||= []
       end
 
       class << self

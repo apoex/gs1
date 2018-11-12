@@ -16,6 +16,8 @@ module GS1
 
       # Default to GTIN-14 since it is the most common format.
       def to_s
+        return unless data
+
         to_gtin_14
       end
     end
