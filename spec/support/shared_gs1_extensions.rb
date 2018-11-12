@@ -3,7 +3,7 @@ RSpec.shared_examples_for 'a GS1 date' do
     subject { described_class }
 
     it { is_expected.to define_date }
-    it { is_expected.not_to define_allowed_length }
+    it { is_expected.to define_allowed_length(6) }
     it { is_expected.to define_barcode_length(6) }
     it { is_expected.to define_max_barcode_length(6) }
   end

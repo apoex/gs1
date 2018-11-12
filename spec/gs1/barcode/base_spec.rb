@@ -34,7 +34,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'default separator' do
-      let(:separator) { "\u001E" }
+      let(:separator) { GS1::Barcode::DEFAULT_SEPARATOR }
 
       include_examples 'sets all attributes from barcode'
     end
@@ -47,13 +47,35 @@ RSpec.describe GS1::Barcode::Base do
       include_examples 'sets all attributes from barcode'
     end
 
-    context 'with barcode containing unknowne application identifier' do
+    context 'with barcode containing unknown application identifier' do
       let(:data) do
         "#{GS1::AI::FISHING_GEAR_TYPE}00000000000000"
       end
 
-      it 'raises unknown record error' do
-        expect { subject }.to raise_error(GS1::Barcode::Base::UnknownRecordError,
+      it 'does not raise anyting' do
+        expect { subject }.not_to raise_error
+      end
+
+      it 'sets all attributes from barcode' do
+        expect(subject.batch).to eq(GS1::Batch.new(nil))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new(nil))
+        expect(subject.gtin).to eq(GS1::GTIN.new(nil))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new(nil))
+        expect(subject.sscc).to eq(GS1::SSCC.new(nil))
+      end
+    end
+  end
+
+  describe '.from_scan!' do
+    subject { GS1::Barcode::Dummy.from_scan!(data) }
+
+    context 'with barcode containing unknown application identifier' do
+      let(:data) do
+        "#{GS1::AI::FISHING_GEAR_TYPE}00000000000000"
+      end
+
+      it 'raises invalid token error' do
+        expect { subject }.to raise_error(GS1::Barcode::InvalidTokenError,
                                           'Unable to retrieve record from application identifier(s) 70, 700, 7009')
       end
     end
@@ -92,6 +114,37 @@ RSpec.describe GS1::Barcode::Base do
       let(:separator) { '~' }
 
       include_examples 'returns all attributes from barcode'
+    end
+
+    context 'with barcode containing unknown application identifier' do
+      subject { GS1::Barcode::Dummy.scan_to_params(data) }
+      let(:data) { '123456' }
+
+      it 'returns an empty hash' do
+        expect(subject).to eq({})
+      end
+    end
+  end
+
+  describe '.scan_to_params!' do
+    context 'with barcode containing unknown application identifier' do
+      subject { GS1::Barcode::Dummy.scan_to_params!(data) }
+      let(:data) { '123456' }
+
+      it 'raises invalid token error' do
+        expect { subject }.to raise_error(GS1::Barcode::InvalidTokenError,
+                                          'Unable to retrieve record from application identifier(s) 12, 123, 1234')
+      end
+    end
+
+    context 'with barcode containing unknown application identifier' do
+      subject { GS1::Barcode::Dummy.scan_to_params!(data) }
+      let(:data) { '011231231231231210' }
+
+      it 'raises invalid token error' do
+        expect { subject }.to raise_error(GS1::Barcode::InvalidTokenError,
+                                          'Unable to retrieve data to GS1::Batch')
+      end
     end
   end
 end

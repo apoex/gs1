@@ -2,6 +2,7 @@ module GS1
   # Module for handling definitions.
   #
   module Definitions
+    class InvalidDefinitionType < StandardError; end
     class MissingLengthDefinition < StandardError; end
     class UnknownDefinition < StandardError; end
 
@@ -37,9 +38,9 @@ module GS1
       # Defaults barcode length to allowed length if not explicitly defined, only
       # if there is one significant allowed.
       def normalize_length_options(options)
-        options[:allowed] = normalize_multiple_option(options[:allowed])
+        options[:allowed] = normalize_multiple_option(options[:allowed] || options[:barcode])
         options[:barcode] = normalize_singlural_option(options[:barcode])
-        options[:max_barcode] = normalize_singlural_option(options[:barcode] || options[:allowed])
+        options[:max_barcode] = options[:allowed]&.last
 
         options
       end
@@ -54,10 +55,11 @@ module GS1
       end
 
       def normalize_singlural_option(option_value)
-        case option_value
-        when Array then option_value.last
-        else option_value
-        end
+        return unless option_value
+
+        raise InvalidDefinitionType unless option_value.is_a?(Numeric)
+
+        option_value
       end
 
       def barcode_length
