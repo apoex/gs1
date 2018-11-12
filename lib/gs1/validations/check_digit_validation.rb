@@ -8,6 +8,8 @@ module GS1
       end
 
       def valid_check_digit?
+        return false unless data
+
         GS1::CheckDigitCalculator.with_sequence(data[0..-2]) == data
       rescue ArgumentError
         false

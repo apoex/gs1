@@ -41,6 +41,16 @@ RSpec.describe GS1::Validations::CheckDigitValidation do
     end
   end
 
+  context 'when nil' do
+    let(:data) { nil }
+
+    before { subject }
+
+    it 'has invalid check digit error' do
+      expect(record.errors).to eq(['Check digit mismatch'])
+    end
+  end
+
   context 'when invalid length' do
     let(:data) { '106' }
 
