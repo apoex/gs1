@@ -43,6 +43,8 @@ module GS1
     end
 
     def to_ai
+      return unless to_s
+
       ai + to_s
     end
 
