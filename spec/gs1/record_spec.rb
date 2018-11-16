@@ -52,13 +52,21 @@ RSpec.describe GS1::Record do
   describe '#to_ai' do
     subject { record.to_ai }
 
+    let(:ai) { 'AI' }
+    let(:data) { 'DATA' }
+
     before do
-      allow(record).to receive(:ai).and_return('AI')
-      allow(record).to receive(:to_s).and_return('DATA')
+      allow(record).to receive(:ai).and_return(ai)
     end
 
-    it 'concatinates #ai and #data' do
+    it 'concatinates #ai and #to_s' do
       is_expected.to eq('AIDATA')
+    end
+
+    context 'when no data' do
+      let(:data) { nil }
+
+      it { is_expected.to be_nil }
     end
   end
 
