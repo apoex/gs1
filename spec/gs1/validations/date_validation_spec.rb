@@ -30,6 +30,14 @@ RSpec.describe GS1::Validations::DateValidation do
     end
   end
 
+  context 'when data has a parsable date format' do
+    let(:data) { '181000' }
+
+    it 'has no errors' do
+      expect(record.errors).to eq([])
+    end
+  end
+
   context 'when data has not a parsable date format' do
     let(:data) { '123123' }
 
