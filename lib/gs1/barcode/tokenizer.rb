@@ -6,7 +6,7 @@ module GS1
     class Tokenizer
       attr_reader :data, :separator, :params
 
-      def initialize(data, separator: DEFAULT_SEPARATOR)
+      def initialize(data, separator: GS1.configuration.barcode_separator)
         @data = data
         @separator = separator
         @params = {}

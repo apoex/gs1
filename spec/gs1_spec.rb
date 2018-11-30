@@ -13,14 +13,54 @@ RSpec.describe GS1 do
   end
 
   describe '.configure' do
-    subject { described_class.configuration }
+    let(:configuration) { described_class.configuration }
 
-    it 'can set company prefix' do
-      described_class.configure do |config|
-        config.company_prefix = 'test'
+    describe 'company prefix' do
+      subject { configuration.company_prefix }
+
+      context 'when not specified' do
+        before { described_class.configure }
+
+        it 'returns default separator' do
+          is_expected.to be_nil
+        end
       end
 
-      expect(subject.company_prefix).to eq('test')
+      context 'when specified' do
+        before do
+          described_class.configure do |config|
+            config.company_prefix = 'test'
+          end
+        end
+
+        it 'returns company prefix' do
+          is_expected.to eq('test')
+        end
+      end
+    end
+
+    describe 'barcode separator' do
+      subject { configuration.barcode_separator }
+
+      context 'when not specified' do
+        before { described_class.configure }
+
+        it 'returns default separator' do
+          is_expected.to eq("\u001E")
+        end
+      end
+
+      context 'when specified' do
+        before do
+          described_class.configure do |config|
+            config.barcode_separator = '~'
+          end
+        end
+
+        it 'returns set separator' do
+          is_expected.to eq('~')
+        end
+      end
     end
   end
 end

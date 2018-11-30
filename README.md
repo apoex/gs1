@@ -22,6 +22,17 @@ Or install it yourself as:
 
 Follow the examples below to start using the gem.
 
+### Configuration
+
+There are some configuration you can do before start using this lib.
+
+```ruby
+GS1.configure do |config|
+  config.company_prefix = '123456789'
+  config.barcode_separator = '~' # Default is "\u001E"
+end
+```
+
 ### Application identifiers
 
 To access the defined application identifier:

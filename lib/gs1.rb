@@ -20,19 +20,28 @@ require 'gs1/barcode'
 #
 module GS1
   class << self
-    def configure
+    def configuration
       @configuration ||= Configuration.new
-
-      yield @configuration
     end
 
-    attr_reader :configuration
+    def configure
+      if block_given?
+        yield configuration
+      else
+        configuration
+      end
+    end
   end
 
   # Configuration holds custom configuration parameters.
   #
   class Configuration
     attr_accessor :company_prefix
+    attr_writer :barcode_separator
+
+    def barcode_separator
+      @barcode_separator || GS1::Barcode::DEFAULT_SEPARATOR
+    end
   end
 
   AI_CLASSES = GS1::Record.descendants.each_with_object({}) do |klass, hash|
