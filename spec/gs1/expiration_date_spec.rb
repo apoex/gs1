@@ -5,5 +5,5 @@ RSpec.describe GS1::ExpirationDate do
     it { is_expected.to eq(GS1::AI::USE_BY) }
   end
 
-  it_behaves_like 'a GS1 date'
+  it_behaves_like 'a GS1 date (month based)'
 end

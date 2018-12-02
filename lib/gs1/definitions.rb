@@ -15,7 +15,7 @@ module GS1
     module ClassMethods
       attr_reader :definitions
 
-      DEFINITIONS = %i[check_digit date length].freeze
+      DEFINITIONS = %i[check_digit date date_month_based length].freeze
 
       def define(key, options = {})
         raise UnknownDefinition, "#{key} is not a valid definition" unless DEFINITIONS.include?(key)
@@ -32,6 +32,11 @@ module GS1
 
       # Currently no support for options.
       def normalize_date_options(_options)
+        {}
+      end
+
+      # Currently no support for options.
+      def normalize_date_month_based_options(_options)
         {}
       end
 

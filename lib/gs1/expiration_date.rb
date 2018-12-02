@@ -48,7 +48,7 @@ module GS1
   # Source: https://www.gs1.org/sites/default/files/docs/barcodes/GS1_General_Specifications.pdf
   #
   class ExpirationDate < Record
-    include Extensions::Date
+    include Extensions::DateMonthBased
 
     AI = AI::USE_BY
   end
