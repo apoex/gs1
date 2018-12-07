@@ -8,13 +8,7 @@ module GS1
       def to_s(level: AIDCMarketingLevels::ENHANCED, separator: GS1.configuration.barcode_separator)
         return unless valid?(level: level)
 
-        [
-          gtin.to_ai,
-          expiration_date&.to_ai,
-          batch&.to_ai,
-          separator,
-          serial_number&.to_ai
-        ].compact.join
+        to_ordered_array(separator).join
       end
 
       def valid?(level: AIDCMarketingLevels::ENHANCED)
@@ -26,6 +20,23 @@ module GS1
       end
 
       private
+
+      def to_ordered_array(separator)
+        out = []
+
+        @params_order.each do |param|
+          record = instance_variable_get("@#{param}")
+
+          next unless record
+
+          out << record.to_ai
+          out << separator if record.class.separator?
+        end
+
+        out.delete_at(-1) if out.last == separator
+
+        out
+      end
 
       def validate(level)
         errors.clear

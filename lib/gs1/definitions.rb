@@ -15,7 +15,7 @@ module GS1
     module ClassMethods
       attr_reader :definitions
 
-      DEFINITIONS = %i[check_digit date date_month_based length].freeze
+      DEFINITIONS = %i[check_digit date date_month_based length separator].freeze
 
       def define(key, options = {})
         raise UnknownDefinition, "#{key} is not a valid definition" unless DEFINITIONS.include?(key)
@@ -38,6 +38,11 @@ module GS1
       # Currently no support for options.
       def normalize_date_month_based_options(_options)
         {}
+      end
+
+      # Boolean value
+      def normalize_separator_options(_options)
+        true
       end
 
       # Defaults barcode length to allowed length if not explicitly defined, only
@@ -65,6 +70,10 @@ module GS1
         raise InvalidDefinitionType unless option_value.is_a?(Numeric)
 
         option_value
+      end
+
+      def separator?
+        definitions[:separator]
       end
 
       def barcode_length

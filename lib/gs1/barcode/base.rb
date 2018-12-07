@@ -6,6 +6,8 @@ module GS1
       include Definitions
 
       def initialize(options = {})
+        @params_order = options.keys
+
         self.class.records.each do |record|
           data = options.fetch(record.underscore_name, nil)
 

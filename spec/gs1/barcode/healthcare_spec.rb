@@ -44,13 +44,13 @@ RSpec.describe GS1::Barcode::Healthcare do
       context 'when valid' do
         let(:valid) { true }
 
-        it 'returns all attributes concatinated' do
+        it 'returns all attributes concatinated in same order as params' do
           gtin_part = "#{GS1::GTIN::AI}#{gtin_data}"
           expiration_date_part = "#{GS1::ExpirationDate::AI}#{expiration_date_data}"
           batch_part = "#{GS1::Batch::AI}#{batch_data}"
           serial_number_part = "#{GS1::SerialNumber::AI}#{serial_number_data}"
 
-          is_expected.to eq(gtin_part + expiration_date_part + batch_part + separator + serial_number_part)
+          is_expected.to eq(gtin_part + batch_part + separator + expiration_date_part + serial_number_part)
         end
       end
 
@@ -80,6 +80,39 @@ RSpec.describe GS1::Barcode::Healthcare do
         expect(rescan.batch).to eq subject.batch
         expect(rescan.expiration_date).to eq subject.expiration_date
         expect(rescan.serial_number).to eq subject.serial_number
+      end
+    end
+
+    context 'when 01000000123123131718100310123123123' do
+      let(:example_scan) { '01000000123123131718100310123123123' }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
+
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s).to eq example_scan
+      end
+    end
+
+    context "when 010000001231231310123123123\u001E17181003" do
+      let(:example_scan) { "010000001231231310123123123\u001E17181003" }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
+
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s).to eq example_scan
+      end
+    end
+
+    context 'when 0100000012312313' do
+      let(:example_scan) { '0100000012312313' }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
+
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
       end
     end
   end

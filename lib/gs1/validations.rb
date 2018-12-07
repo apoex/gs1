@@ -39,6 +39,8 @@ module GS1
 
       def validate
         self.class.definitions.each_key do |definition|
+          next if definition == :separator
+
           public_send("validate_#{definition}")
         end
       end

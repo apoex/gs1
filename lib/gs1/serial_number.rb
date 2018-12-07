@@ -27,5 +27,6 @@ module GS1
     AI = AI::SERIAL
 
     define :length, allowed: 1..20
+    define :separator
   end
 end
