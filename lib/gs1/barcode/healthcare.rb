@@ -27,7 +27,7 @@ module GS1
         @params_order.each do |param|
           record = instance_variable_get("@#{param}")
 
-          next unless record
+          next unless record.to_ai
 
           out << record.to_ai
           out << separator if record.class.separator?

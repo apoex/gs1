@@ -44,13 +44,42 @@ RSpec.describe GS1::Barcode::Healthcare do
       context 'when valid' do
         let(:valid) { true }
 
-        it 'returns all attributes concatinated in same order as params' do
-          gtin_part = "#{GS1::GTIN::AI}#{gtin_data}"
-          expiration_date_part = "#{GS1::ExpirationDate::AI}#{expiration_date_data}"
-          batch_part = "#{GS1::Batch::AI}#{batch_data}"
-          serial_number_part = "#{GS1::SerialNumber::AI}#{serial_number_data}"
+        let(:expected_gtin_part) { "#{GS1::GTIN::AI}#{gtin_data}" }
+        let(:expected_expiration_date_part) { "#{GS1::ExpirationDate::AI}#{expiration_date_data}" }
+        let(:expected_batch_part) { "#{GS1::Batch::AI}#{batch_data}" }
+        let(:expected_serial_number_part) { "#{GS1::SerialNumber::AI}#{serial_number_data}" }
 
-          is_expected.to eq(gtin_part + batch_part + separator + expiration_date_part + serial_number_part)
+        it 'returns all attributes concatinated in same order as params' do
+          is_expected.to eq(expected_gtin_part +
+                            expected_batch_part + separator +
+                            expected_expiration_date_part +
+                            expected_serial_number_part)
+        end
+
+        context 'when two variable length records in a row' do
+          let(:options) do
+            { gtin: gtin_data,
+              batch: batch_data,
+              serial_number: serial_number_data,
+              expiration_date: expiration_date_data }
+          end
+
+          it 'returns all attributes concatinated in same order as params' do
+            is_expected.to eq(expected_gtin_part +
+                              expected_batch_part + separator +
+                              expected_serial_number_part + separator +
+                              expected_expiration_date_part)
+          end
+
+          context 'and serial number is nil' do
+            let(:serial_number_data) { nil }
+
+            it 'does not add an extra separator' do
+              is_expected.to eq(expected_gtin_part +
+                                expected_batch_part + separator +
+                                expected_expiration_date_part)
+            end
+          end
         end
       end
 
