@@ -8,13 +8,14 @@ module GS1
       def to_s(level: AIDCMarketingLevels::ENHANCED, separator: GS1.configuration.barcode_separator)
         return unless valid?(level: level)
 
-        [
-          gtin.to_ai,
-          expiration_date&.to_ai,
-          batch&.to_ai,
-          separator,
-          serial_number&.to_ai
-        ].compact.join
+        @params_order.each_with_object('') do |param, out|
+          record = send(param)
+
+          next unless record.to_ai
+
+          out << record.to_ai
+          out << separator if record.class.separator? && param != @params_order.last
+        end
       end
 
       def valid?(level: AIDCMarketingLevels::ENHANCED)

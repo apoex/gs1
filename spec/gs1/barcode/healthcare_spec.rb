@@ -44,13 +44,42 @@ RSpec.describe GS1::Barcode::Healthcare do
       context 'when valid' do
         let(:valid) { true }
 
-        it 'returns all attributes concatinated' do
-          gtin_part = "#{GS1::GTIN::AI}#{gtin_data}"
-          expiration_date_part = "#{GS1::ExpirationDate::AI}#{expiration_date_data}"
-          batch_part = "#{GS1::Batch::AI}#{batch_data}"
-          serial_number_part = "#{GS1::SerialNumber::AI}#{serial_number_data}"
+        let(:expected_gtin_part) { "#{GS1::GTIN::AI}#{gtin_data}" }
+        let(:expected_expiration_date_part) { "#{GS1::ExpirationDate::AI}#{expiration_date_data}" }
+        let(:expected_batch_part) { "#{GS1::Batch::AI}#{batch_data}" }
+        let(:expected_serial_number_part) { "#{GS1::SerialNumber::AI}#{serial_number_data}" }
 
-          is_expected.to eq(gtin_part + expiration_date_part + batch_part + separator + serial_number_part)
+        it 'returns all attributes concatinated in same order as params' do
+          is_expected.to eq(expected_gtin_part +
+                            expected_batch_part + separator +
+                            expected_expiration_date_part +
+                            expected_serial_number_part)
+        end
+
+        context 'when two variable length records in a row' do
+          let(:options) do
+            { gtin: gtin_data,
+              batch: batch_data,
+              serial_number: serial_number_data,
+              expiration_date: expiration_date_data }
+          end
+
+          it 'returns all attributes concatinated in same order as params' do
+            is_expected.to eq(expected_gtin_part +
+                              expected_batch_part + separator +
+                              expected_serial_number_part + separator +
+                              expected_expiration_date_part)
+          end
+
+          context 'and serial number is nil' do
+            let(:serial_number_data) { nil }
+
+            it 'does not add an extra separator' do
+              is_expected.to eq(expected_gtin_part +
+                                expected_batch_part + separator +
+                                expected_expiration_date_part)
+            end
+          end
         end
       end
 
@@ -80,6 +109,39 @@ RSpec.describe GS1::Barcode::Healthcare do
         expect(rescan.batch).to eq subject.batch
         expect(rescan.expiration_date).to eq subject.expiration_date
         expect(rescan.serial_number).to eq subject.serial_number
+      end
+    end
+
+    context 'when 01000000123123131718100310123123123' do
+      let(:example_scan) { '01000000123123131718100310123123123' }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
+
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s).to eq example_scan
+      end
+    end
+
+    context "when 010000001231231310123123123\u001E17181003" do
+      let(:example_scan) { "010000001231231310123123123\u001E17181003" }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
+
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s).to eq example_scan
+      end
+    end
+
+    context 'when 0100000012312313' do
+      let(:example_scan) { '0100000012312313' }
+      let(:rescan) { described_class.from_scan(subject.to_s) }
+
+      subject { described_class.from_scan(example_scan) }
+
+      it 'reproduces the input' do
+        expect(subject.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
       end
     end
   end
