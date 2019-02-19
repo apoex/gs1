@@ -27,6 +27,17 @@ RSpec.describe GS1::Barcode::Healthcare do
         expect(subject.serial_number).to eq(GS1::SerialNumber.new('123123'))
       end
     end
+
+    context "maximum length of serial number + separator" do
+      let(:data) { "01070462606504112101582353425597816838\u001E1721093010184238131" }
+
+      it 'sets all attributes' do
+        expect(subject.gtin).to eq(GS1::GTIN.new('07046260650411'))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('210930'))
+        expect(subject.batch).to eq(GS1::Batch.new('184238131'))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new('01582353425597816838'))
+      end
+    end
   end
 
   describe '#to_s' do
