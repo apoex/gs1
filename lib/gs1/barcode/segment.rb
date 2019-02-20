@@ -99,7 +99,7 @@ module GS1
       def shift_separator_length
         separator_index = data.find_index(separator)
 
-        return unless separator_index && separator_index < record.barcode_max_length
+        return unless separator_index && separator_index <= record.barcode_max_length
 
         shift_fixed_length(separator_index).tap do
           data.shift # Shift separator character
