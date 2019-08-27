@@ -20,6 +20,10 @@ module GS1
             attr_reader record.underscore_name
           end
         end
+
+        def record_names
+          @records.map(&:underscore_name)
+        end
       end
     end
   end

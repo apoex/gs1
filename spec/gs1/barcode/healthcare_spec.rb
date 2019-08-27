@@ -38,6 +38,19 @@ RSpec.describe GS1::Barcode::Healthcare do
         expect(subject.serial_number).to eq(GS1::SerialNumber.new('01582353425597816838'))
       end
     end
+
+    context "double scan with SSCC" do
+      let(:data) { "00373322680596223355010880959317002021122286213337\u001E1722013110F1903227" }
+
+      it 'is not valid' do
+        expect(subject).not_to be_valid
+        expect(subject.errors).to eq(['Unexpected sscc'])
+        expect(subject.gtin).to eq(GS1::GTIN.new('08809593170020'))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
+        expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+      end
+    end
   end
 
   describe '#to_s' do

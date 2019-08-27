@@ -31,6 +31,8 @@ module GS1
       def validate(level)
         errors.clear
 
+        validate_records
+
         validate_minimum
         return if level == AIDCMarketingLevels::MINIMUM
 
@@ -38,6 +40,14 @@ module GS1
         return if level == AIDCMarketingLevels::ENHANCED
 
         validate_highest
+      end
+
+      def validate_records
+        record_diff = @params_order - self.class.record_names
+
+        record_diff.each do |record_name|
+          errors << "Unexpected #{record_name}"
+        end
       end
 
       def validate_minimum
