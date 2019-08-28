@@ -41,7 +41,7 @@ module GS1
       end
 
       def validate_minimum
-        errors << Error.new(:healthcare, 'Invalid gtin') unless gtin.valid?
+        errors << Error.new(:healthcare, 'Invalid gtin') unless gtin&.valid?
       end
 
       def validate_enhanced

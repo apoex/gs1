@@ -6,7 +6,7 @@ module GS1
       attr_reader :data, :separator
 
       def initialize(data, separator: GS1.configuration.barcode_separator)
-        @data = data.chars
+        @data = data.to_s.chars
         @separator = separator
       end
 

@@ -17,6 +17,18 @@ RSpec.describe GS1::Barcode::Healthcare do
   describe 'example scans' do
     subject { described_class.from_scan(data) }
 
+    context 'when nil' do
+      let(:data) { nil }
+
+      it 'nils all attributes' do
+        expect(subject).not_to be_valid
+        expect(subject.gtin).to be_nil
+        expect(subject.expiration_date).to be_nil
+        expect(subject.batch).to be_nil
+        expect(subject.serial_number).to be_nil
+      end
+    end
+
     context "01000000123123131718100310123123123\u001E21123123" do
       let(:data) { "01000000123123131718100310123123123\u001E21123123" }
 
