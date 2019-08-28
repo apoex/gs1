@@ -26,13 +26,20 @@ module GS1
       # Adding defintion instance methods.
       #
       module InstanceMethods
-        def validate_record_attribute_name(attribute_name)
+        def validate_attribute_data(attribute_name)
+          return unless instance_variable_get("@#{attribute_name}")
+
+          errors[attribute_name] << Error.new(:already_defined, persistent: true)
+        end
+
+        def validate_attribute_record(attribute_name)
           self.class.records.find { |r| r.underscore_name == attribute_name }.tap do |record|
-            if instance_variable_get("@#{attribute_name}")
-              errors[attribute_name] << Error.new(:already_defined, persistent: true)
+            if record
+              yield record
+              next
             end
 
-            errors[attribute_name] << Error.new(:unknown_attribute, persistent: true) unless record
+            errors[attribute_name] << Error.new(:unknown_attribute, persistent: true)
           end
         end
       end

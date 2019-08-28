@@ -7,11 +7,10 @@ module GS1
 
       def initialize(options = {})
         options.each do |(attribute_name, data)|
-          record = validate_record_attribute_name(attribute_name)
-
-          next unless record
-
-          instance_variable_set("@#{attribute_name}", record.new(data))
+          validate_attribute_data(attribute_name)
+          validate_attribute_record(attribute_name) do |record|
+            instance_variable_set("@#{attribute_name}", record.new(data))
+          end
         end
 
         @params_order = options.to_h.keys
