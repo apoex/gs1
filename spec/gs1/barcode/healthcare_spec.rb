@@ -40,7 +40,7 @@ RSpec.describe GS1::Barcode::Healthcare do
       end
     end
 
-    context "maximum length of serial number + separator" do
+    context 'maximum length of serial number + separator' do
       let(:data) { "01070462606504112101582353425597816838\u001E1721093010184238131" }
 
       it 'sets all attributes' do
