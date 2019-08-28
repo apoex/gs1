@@ -29,7 +29,7 @@ module GS1
       private
 
       def validate(level)
-        errors.clear(:healthcare)
+        errors.clear
 
         validate_minimum
         return if level == AIDCMarketingLevels::MINIMUM
@@ -57,9 +57,9 @@ module GS1
         attribute = public_send(attribute_name)
 
         if attribute.nil?
-          errors << Error.new(:healthcare, attribute_name, :missing)
+          errors[attribute_name] << Error.new(:missing)
         elsif !attribute.valid?
-          errors << Error.new(:healthcare, attribute_name, :invalid)
+          errors[attribute_name] << Error.new(:invalid)
         end
       end
     end

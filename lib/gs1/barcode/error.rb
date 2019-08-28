@@ -3,20 +3,27 @@ module GS1
     # Error wrapper class for a barcode.
     #
     class Error
-      attr_reader :type, :attribute, :message
+      attr_reader :message
 
-      def initialize(type, attribute, message)
-        @type = type
-        @attribute = attribute
+      def initialize(message, persistent: false)
         @message = message
+        @persistent = persistent
       end
 
-      def human_attribute
-        attribute.to_s.tr('_', ' ')
+      def persistent?
+        @persistent
       end
 
       def human_message
         message.to_s.tr('_', ' ').capitalize
+      end
+
+      def hash
+        message.hash
+      end
+
+      def eql?(other)
+        @message == other.message
       end
     end
   end
