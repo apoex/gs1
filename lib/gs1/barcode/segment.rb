@@ -11,9 +11,9 @@ module GS1
       end
 
       def to_params
-        return {} unless record
+        return [] unless record
 
-        { record.underscore_name => record_data }
+        [record.underscore_name, record_data]
       end
 
       # Fetch the two first characters (interpreted as AI) from the remaining

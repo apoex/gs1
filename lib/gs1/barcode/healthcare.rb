@@ -29,9 +29,7 @@ module GS1
       private
 
       def validate(level)
-        errors.clear
-
-        validate_records
+        errors.clear(:healthcare)
 
         validate_minimum
         return if level == AIDCMarketingLevels::MINIMUM
@@ -42,25 +40,17 @@ module GS1
         validate_highest
       end
 
-      def validate_records
-        record_diff = @params_order - self.class.record_names
-
-        record_diff.each do |record_name|
-          errors << "Unexpected #{record_name}"
-        end
-      end
-
       def validate_minimum
-        errors << 'Invalid gtin' unless gtin.valid?
+        errors << Error.new(:healthcare, 'Invalid gtin') unless gtin.valid?
       end
 
       def validate_enhanced
-        errors << 'Invalid batch' unless batch&.valid?
-        errors << 'Invalid expiration date' unless expiration_date&.valid?
+        errors << Error.new(:healthcare, 'Invalid batch') unless batch&.valid?
+        errors << Error.new(:healthcare, 'Invalid expiration date') unless expiration_date&.valid?
       end
 
       def validate_highest
-        errors << 'Invalid serial number' unless serial_number&.valid?
+        errors << Error.new(:healthcare, 'Invalid serial number') unless serial_number&.valid?
       end
     end
   end

@@ -1,4 +1,6 @@
 require 'gs1/barcode/definitions'
+require 'gs1/barcode/error'
+require 'gs1/barcode/errors'
 
 require 'gs1/barcode/base'
 require 'gs1/barcode/healthcare'

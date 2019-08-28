@@ -5,6 +5,7 @@ module GS1
     module Definitions
       def self.included(base)
         base.extend ClassMethods
+        base.send :include, InstanceMethods
       end
 
       # Adding defintion class methods.
@@ -20,9 +21,19 @@ module GS1
             attr_reader record.underscore_name
           end
         end
+      end
 
-        def record_names
-          @records.map(&:underscore_name)
+      # Adding defintion instance methods.
+      #
+      module InstanceMethods
+        def validate_record_attribute_name(attribute_name)
+          self.class.records.find { |r| r.underscore_name == attribute_name }.tap do |record|
+            if instance_variable_get("@#{attribute_name}")
+              errors << Error.new(:base, "#{attribute_name} is already defined")
+            end
+
+            errors << Error.new(:base, "#{attribute_name} is not defined for #{self.class}") unless record
+          end
         end
       end
     end
