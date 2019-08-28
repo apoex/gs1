@@ -29,10 +29,10 @@ module GS1
         def validate_record_attribute_name(attribute_name)
           self.class.records.find { |r| r.underscore_name == attribute_name }.tap do |record|
             if instance_variable_get("@#{attribute_name}")
-              errors << Error.new(:base, "#{attribute_name} is already defined")
+              errors << Error.new(:base, attribute_name, :already_defined)
             end
 
-            errors << Error.new(:base, "#{attribute_name} is not defined for #{self.class}") unless record
+            errors << Error.new(:base, attribute_name, :unknown) unless record
           end
         end
       end

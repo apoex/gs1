@@ -21,8 +21,17 @@ module GS1
         errors.empty?
       end
 
+      def messages
+        errors.each_with_object({}) do |error, hash|
+          hash[error.attribute] ||= []
+          hash[error.attribute] << error.human_message
+        end
+      end
+
       def full_messages
-        errors.map(&:message)
+        errors.map do |error|
+          "#{error.human_message} #{error.human_attribute}"
+        end
       end
 
       alias << add

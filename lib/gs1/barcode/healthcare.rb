@@ -41,16 +41,26 @@ module GS1
       end
 
       def validate_minimum
-        errors << Error.new(:healthcare, 'Invalid gtin') unless gtin&.valid?
+        validate_attribute(:gtin)
       end
 
       def validate_enhanced
-        errors << Error.new(:healthcare, 'Invalid batch') unless batch&.valid?
-        errors << Error.new(:healthcare, 'Invalid expiration date') unless expiration_date&.valid?
+        validate_attribute(:batch)
+        validate_attribute(:expiration_date)
       end
 
       def validate_highest
-        errors << Error.new(:healthcare, 'Invalid serial number') unless serial_number&.valid?
+        validate_attribute(:serial_number)
+      end
+
+      def validate_attribute(attribute_name)
+        attribute = public_send(attribute_name)
+
+        if attribute.nil?
+          errors << Error.new(:healthcare, attribute_name, :missing)
+        elsif !attribute.valid?
+          errors << Error.new(:healthcare, attribute_name, :invalid)
+        end
       end
     end
   end
