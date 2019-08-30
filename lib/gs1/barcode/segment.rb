@@ -6,14 +6,14 @@ module GS1
       attr_reader :data, :separator
 
       def initialize(data, separator: GS1.configuration.barcode_separator)
-        @data = data.chars
+        @data = data.to_s.chars
         @separator = separator
       end
 
       def to_params
-        return {} unless record
+        return [] unless record
 
-        { record.underscore_name => record_data }
+        [record.underscore_name, record_data]
       end
 
       # Fetch the two first characters (interpreted as AI) from the remaining

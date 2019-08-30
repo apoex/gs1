@@ -56,12 +56,12 @@ RSpec.describe GS1::Barcode::Base do
         expect { subject }.not_to raise_error
       end
 
-      it 'sets all attributes from barcode' do
-        expect(subject.batch).to eq(GS1::Batch.new(nil))
-        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new(nil))
-        expect(subject.gtin).to eq(GS1::GTIN.new(nil))
-        expect(subject.serial_number).to eq(GS1::SerialNumber.new(nil))
-        expect(subject.sscc).to eq(GS1::SSCC.new(nil))
+      it 'sets mismatched attributes to nil' do
+        expect(subject.batch).to be_nil
+        expect(subject.expiration_date).to be_nil
+        expect(subject.gtin).to be_nil
+        expect(subject.serial_number).to be_nil
+        expect(subject.sscc).to be_nil
       end
     end
   end
@@ -84,11 +84,13 @@ RSpec.describe GS1::Barcode::Base do
   describe '.scan_to_params' do
     shared_examples 'returns all attributes from barcode' do
       it 'returns all attributes from barcode' do
-        expect(subject).to eq(batch: 'THISISABATCH',
-                              expiration_date: '181016',
-                              gtin: '00000000000000',
-                              serial_number: 'zzzzzzz',
-                              sscc: '123123123123123123')
+        expect(subject).to eq([
+                                [:gtin, '00000000000000'],
+                                [:expiration_date, '181016'],
+                                [:serial_number, 'zzzzzzz'],
+                                [:batch, 'THISISABATCH'],
+                                [:sscc, '123123123123123123']
+                              ])
       end
     end
 
@@ -120,8 +122,8 @@ RSpec.describe GS1::Barcode::Base do
       subject { GS1::Barcode::Dummy.scan_to_params(data) }
       let(:data) { '123456' }
 
-      it 'returns an empty hash' do
-        expect(subject).to eq({})
+      it 'returns an empty array' do
+        expect(subject).to eq([])
       end
     end
   end

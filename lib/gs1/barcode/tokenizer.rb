@@ -9,7 +9,7 @@ module GS1
       def initialize(data, separator: GS1.configuration.barcode_separator)
         @data = data
         @separator = separator
-        @params = {}
+        @params = []
       end
 
       def to_params
@@ -26,7 +26,8 @@ module GS1
         segment_from_input(input, bang) do |segment|
           next if segment.to_params.empty?
 
-          params.merge!(segment.to_params)
+          params << segment.to_params
+
           next if segment.rest.empty?
 
           segment_to_params(segment.rest, bang)

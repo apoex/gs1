@@ -6,17 +6,18 @@ module GS1
       include Definitions
 
       def initialize(options = {})
-        @params_order = options.keys
-
-        self.class.records.each do |record|
-          data = options.fetch(record.underscore_name, nil)
-
-          instance_variable_set("@#{record.underscore_name}", record.new(data))
+        options.each do |(attribute_name, data)|
+          validate_attribute_data(attribute_name)
+          validate_attribute_record(attribute_name) do |record|
+            instance_variable_set("@#{attribute_name}", record.new(data))
+          end
         end
+
+        @params_order = options.to_h.keys
       end
 
       def errors
-        @errors ||= []
+        @errors ||= Errors.new
       end
 
       class << self

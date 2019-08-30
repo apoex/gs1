@@ -17,6 +17,18 @@ RSpec.describe GS1::Barcode::Healthcare do
   describe 'example scans' do
     subject { described_class.from_scan(data) }
 
+    context 'when nil' do
+      let(:data) { nil }
+
+      it 'nils all attributes' do
+        expect(subject).not_to be_valid
+        expect(subject.gtin).to be_nil
+        expect(subject.expiration_date).to be_nil
+        expect(subject.batch).to be_nil
+        expect(subject.serial_number).to be_nil
+      end
+    end
+
     context "01000000123123131718100310123123123\u001E21123123" do
       let(:data) { "01000000123123131718100310123123123\u001E21123123" }
 
@@ -28,7 +40,7 @@ RSpec.describe GS1::Barcode::Healthcare do
       end
     end
 
-    context "maximum length of serial number + separator" do
+    context 'maximum length of serial number + separator' do
       let(:data) { "01070462606504112101582353425597816838\u001E1721093010184238131" }
 
       it 'sets all attributes' do
@@ -36,6 +48,53 @@ RSpec.describe GS1::Barcode::Healthcare do
         expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('210930'))
         expect(subject.batch).to eq(GS1::Batch.new('184238131'))
         expect(subject.serial_number).to eq(GS1::SerialNumber.new('01582353425597816838'))
+      end
+    end
+
+    context 'double scan with SSCC' do
+      let(:data) { "00373322680596223355010880959317002021122286213337\u001E1722013110F1903227" }
+
+      it 'is not valid' do
+        expect(subject).not_to be_valid
+        expect(subject.errors.full_messages).to eq(['Unknown attribute sscc'])
+        expect(subject.gtin).to eq(GS1::GTIN.new('08809593170020'))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
+        expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+      end
+    end
+
+    context 'double scan with expiration date' do
+      let(:data) { "010880959317002021122286213337\u001E1722013110F1903227\u001E17220131" }
+
+      it 'is not valid' do
+        expect(subject).not_to be_valid
+        expect(subject.errors.full_messages).to eq(['Already defined expiration date'])
+        expect(subject.gtin).to eq(GS1::GTIN.new('08809593170020'))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
+        expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+      end
+    end
+
+    context 'double scan with self' do
+      let(:data) do
+        "010880959317102021122286213337\u001E1722013110F1903227" \
+        "010880959317102021122286213337\u001E1722013110F1903227"
+      end
+
+      it 'is not valid' do
+        expect(subject).not_to be_valid
+        expect(subject.errors.messages).to eq(batch: ['Already defined'],
+                                              expiration_date: ['Already defined'],
+                                              gtin: ['Invalid'])
+        expect(subject.errors.full_messages).to eq(['Already defined batch',
+                                                    'Already defined expiration date',
+                                                    'Invalid gtin'])
+        expect(subject.gtin).to eq(GS1::GTIN.new('08809593171020'))
+        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
+        expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
+        expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
       end
     end
   end
@@ -202,7 +261,8 @@ RSpec.describe GS1::Barcode::Healthcare do
         let(:gtin_valid) { false }
 
         it 'has invalid GTIN error' do
-          expect(barcode.errors).to eq(['Invalid gtin'])
+          expect(barcode.errors.messages).to eq(gtin: ['Invalid'])
+          expect(barcode.errors.full_messages).to eq(['Invalid gtin'])
         end
       end
     end
@@ -230,7 +290,8 @@ RSpec.describe GS1::Barcode::Healthcare do
         let(:batch_valid) { false }
 
         it 'has invalid GTIN error' do
-          expect(barcode.errors).to eq(['Invalid batch'])
+          expect(barcode.errors.messages).to eq(batch: ['Invalid'])
+          expect(barcode.errors.full_messages).to eq(['Invalid batch'])
         end
       end
 
@@ -238,7 +299,8 @@ RSpec.describe GS1::Barcode::Healthcare do
         let(:expiration_date_valid) { false }
 
         it 'has invalid GTIN error' do
-          expect(barcode.errors).to eq(['Invalid expiration date'])
+          expect(barcode.errors.messages).to eq(expiration_date: ['Invalid'])
+          expect(barcode.errors.full_messages).to eq(['Invalid expiration date'])
         end
       end
     end
@@ -266,7 +328,8 @@ RSpec.describe GS1::Barcode::Healthcare do
         let(:serial_number_valid) { false }
 
         it 'has invalid GTIN error' do
-          expect(barcode.errors).to eq(['Invalid serial number'])
+          expect(barcode.errors.messages).to eq(serial_number: ['Invalid'])
+          expect(barcode.errors.full_messages).to eq(['Invalid serial number'])
         end
       end
     end
