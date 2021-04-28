@@ -1,0 +1,11 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "06:30"
+    timezone: Europe/Stockholm
+  open-pull-requests-limit: 10
+  reviewers:
+  - stefanahman
