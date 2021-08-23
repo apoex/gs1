@@ -7,7 +7,7 @@ module GS1
   #
   class CheckDigitCalculator
     MULTIPLIER_ARRAY = [3, 1] * 9
-    VALID_LENGTHS = [7, 11, 12, 13, 17].freeze
+    VALID_LENGTHS = [7, 11, 12, 13, 16, 17].freeze
 
     def initialize(sequence)
       @sequence = sequence

@@ -73,6 +73,14 @@ RSpec.describe GS1::CheckDigitCalculator do
       end
     end
 
+    context 'GSIN example' do
+      let(:sequence) { '7350066493304104' }
+
+      it 'calculates correct check digit' do
+        is_expected.to eq('3')
+      end
+    end
+
     context 'SSCC example' do
       let(:sequence) { '87350066493304104' }
 
