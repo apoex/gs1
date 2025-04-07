@@ -27,10 +27,12 @@ RSpec.describe GS1 do
       end
 
       context 'when specified' do
-        before do
-          described_class.configure do |config|
-            config.company_prefix = 'test'
-          end
+        around do |spec|
+          old_value = described_class.configuration.company_prefix
+          described_class.configure { _1.company_prefix = 'test' }
+          spec.run
+        ensure
+          described_class.configuration.company_prefix = old_value
         end
 
         it 'returns company prefix' do
@@ -51,10 +53,12 @@ RSpec.describe GS1 do
       end
 
       context 'when specified' do
-        before do
-          described_class.configure do |config|
-            config.barcode_separator = '~'
-          end
+        around do |spec|
+          old_value = described_class.configuration.barcode_separator
+          described_class.configure { _1.barcode_separator = '~' }
+          spec.run
+        ensure
+          described_class.configuration.barcode_separator = old_value
         end
 
         it 'returns set separator' do
