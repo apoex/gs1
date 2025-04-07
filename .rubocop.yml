@@ -6,7 +6,7 @@ Metrics/BlockLength:
     - 'spec/**/*'
     - 'gs1.gemspec'
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Style/FrozenStringLiteralComment:
