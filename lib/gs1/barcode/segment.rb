@@ -73,7 +73,7 @@ module GS1
       def process_ai_variants(shifts)
         return unless can_shift_ai_data?(shifts)
 
-        ai_variants << ai_variants.last.to_s + data.shift(shifts).join
+        ai_variants << (ai_variants.last.to_s + data.shift(shifts).join)
 
         AI_CLASSES[ai_variants.last]
       end

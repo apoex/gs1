@@ -16,6 +16,7 @@ module GS1
 
     class << self
       def inherited(subclass)
+        super
         descendants << subclass
       end
 

@@ -1,18 +1,20 @@
 require 'spec_helper'
 
 RSpec.describe GS1::Validations::CheckDigitValidation do
-  class ValidationCheckDigitDummy
-    include GS1::Validations::CheckDigitValidation
+  let(:validation_check_digit_dummy) do
+    Class.new do
+      include GS1::Validations::CheckDigitValidation
 
-    attr_reader :data, :errors
+      attr_reader :data, :errors
 
-    def initialize(data)
-      @data = data
-      @errors = []
+      def initialize(data)
+        @data = data
+        @errors = []
+      end
     end
   end
 
-  let(:record) { ValidationCheckDigitDummy.new(data) }
+  let(:record) { validation_check_digit_dummy.new(data) }
   let(:data) { '106141411234567891' }
   let(:calculated_sequence) { nil }
 

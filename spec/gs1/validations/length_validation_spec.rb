@@ -1,22 +1,24 @@
 RSpec.describe GS1::Validations::LengthValidation do
-  class ValidationLengthDummy
-    include GS1::Validations::LengthValidation
+  let(:validation_length_dummy) do
+    Class.new do
+      include GS1::Validations::LengthValidation
 
-    attr_reader :data, :errors
+      attr_reader :data, :errors
 
-    def initialize(data)
-      @data = data
-      @errors = []
+      def initialize(data)
+        @data = data
+        @errors = []
+      end
     end
   end
 
-  let(:record) { ValidationLengthDummy.new(data) }
+  let(:record) { validation_length_dummy.new(data) }
   let(:expected_allowed_lengths) { [0] }
   let(:expected_barcode_length) { 0 }
 
   before do
-    allow(ValidationLengthDummy).to receive(:allowed_lengths).and_return(expected_allowed_lengths)
-    allow(ValidationLengthDummy).to receive(:barcode_length).and_return(expected_barcode_length)
+    allow(validation_length_dummy).to receive(:allowed_lengths).and_return(expected_allowed_lengths)
+    allow(validation_length_dummy).to receive(:barcode_length).and_return(expected_barcode_length)
     record.validate_length
   end
 

@@ -1,13 +1,13 @@
 RSpec.describe GS1::Validations do
-  module GS1
-    class ValidationDummy < Record
+  let(:validation_dummy) do
+    Class.new(GS1::Record) do
       define :check_digit
       define :date
       define :length
     end
   end
 
-  let(:record) { GS1::ValidationDummy.new(nil) }
+  let(:record) { validation_dummy.new(nil) }
 
   describe '#valid?' do
     before do

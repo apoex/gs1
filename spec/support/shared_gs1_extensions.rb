@@ -149,6 +149,7 @@ RSpec.shared_examples_for 'a GS1 GTIN' do
   end
 
   describe '#to_s' do
+    # rubocop:disable Naming/VariableNumber
     subject { record.to_s }
 
     before do
@@ -173,5 +174,7 @@ RSpec.shared_examples_for 'a GS1 GTIN' do
 
       expect(record).to have_received(:to_gtin_14)
     end
+
+    # rubocop:enable Naming/VariableNumber
   end
 end
