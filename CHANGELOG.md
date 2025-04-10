@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Minimum supported version of Ruby is now 3.0.5 (breaking change)
+- Extra elements in barcodes are now ignored (breaking change). Set the
+    `ignore_extra_barcode_elements` configuration option to `false` to restore
+    previous behavior
+
+### Added
+- Add a new option (`ignore_extra_barcode_elements`) to configure if extra
+    elements in barcodes should be reported as an error or ignored. By default,
+    ignore
 
 ## [1.1.0] - 2021-08-23
 

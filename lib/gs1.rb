@@ -36,8 +36,12 @@ module GS1
   # Configuration holds custom configuration parameters.
   #
   class Configuration
-    attr_accessor :company_prefix
+    attr_accessor :company_prefix, :ignore_extra_barcode_elements
     attr_writer :barcode_separator
+
+    def initialize
+      @ignore_extra_barcode_elements = true
+    end
 
     def barcode_separator
       @barcode_separator || GS1::Barcode::DEFAULT_SEPARATOR
