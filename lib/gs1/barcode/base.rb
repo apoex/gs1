@@ -5,10 +5,11 @@ module GS1
     class Base
       include Definitions
 
-      def initialize(attributes = {})
+      def initialize(attributes = {}, options = {})
+        attribute_validator = options[:attribute_validator] || AttributeValidator.new
         attributes.each do |(name, data)|
-          validate_attribute_data(name)
-          validate_attribute_record(name) do |record|
+          attribute_validator.validate_data(self, name)
+          attribute_validator.validate_record(self, name) do |record|
             instance_variable_set("@#{name}", record.new(data))
           end
         end
@@ -21,12 +22,23 @@ module GS1
       end
 
       class << self
-        def from_scan!(barcode, separator: GS1.configuration.barcode_separator)
-          new(scan_to_params!(barcode, separator: separator))
+        def for(attributes, configuration:)
+          attribute_validator = AttributeValidator.for(configuration: configuration)
+          new(attributes, attribute_validator: attribute_validator)
         end
 
-        def from_scan(barcode, separator: GS1.configuration.barcode_separator)
-          new(scan_to_params(barcode, separator: separator))
+        def from_scan!(barcode, separator: GS1.configuration.barcode_separator)
+          self.for(
+            scan_to_params!(barcode, separator: separator),
+            configuration: GS1.configuration
+          )
+        end
+
+        def from_scan(barcode, separator: GS1.configuration.barcode_separator);
+          self.for(
+            scan_to_params(barcode, separator: separator),
+            configuration: GS1.configuration
+          )
         end
 
         def scan_to_params!(barcode, separator: GS1.configuration.barcode_separator)

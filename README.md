@@ -30,6 +30,7 @@ There are some configuration you can do before start using this lib.
 GS1.configure do |config|
   config.company_prefix = '123456789'
   config.barcode_separator = '~' # Default is "\u001E"
+  config.ignore_extra_barcode_elements = false # Default is true
 end
 ```
 
