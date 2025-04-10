@@ -1,6 +1,7 @@
 require 'bundler/setup'
 
-require 'byebug'
+require 'pry'
+require 'pry-byebug'
 require 'simplecov'
 
 require 'support/normalization_helper'
