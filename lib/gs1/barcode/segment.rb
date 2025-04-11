@@ -5,7 +5,7 @@ module GS1
     class Segment
       attr_reader :data, :separator
 
-      def initialize(data, separator: GS1.configuration.barcode_separator, ai_classes: AI_CLASSES)
+      def initialize(data, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
         @data = data.to_s.chars
         @separator = separator
         @ai_classes = ai_classes
