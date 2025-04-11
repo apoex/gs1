@@ -46,11 +46,13 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'with barcode containing unknown application identifier' do
+      subject { dummy.from_scan(data, ai_classes: {}) }
+
       let(:data) do
         "#{GS1::AI::FISHING_GEAR_TYPE}00000000000000"
       end
 
-      it 'does not raise anyting' do
+      it 'does not raise anything' do
         expect { subject }.not_to raise_error
       end
 
@@ -88,8 +90,6 @@ RSpec.describe GS1::Barcode::Base do
   end
 
   describe '.from_scan!' do
-    subject { dummy.from_scan!(data) }
-
     context 'when configured to not ignore extra barcode elements' do
       around do |spec|
         old_value = GS1.configuration.ignore_extra_barcode_elements
@@ -100,6 +100,8 @@ RSpec.describe GS1::Barcode::Base do
       end
 
       context 'with barcode containing unknown application identifier' do
+        subject { dummy.from_scan!(data, ai_classes: {}) }
+
         let(:data) do
           "#{GS1::AI::FISHING_GEAR_TYPE}00000000000000"
         end
@@ -150,7 +152,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'with barcode containing unknown application identifier' do
-      subject { dummy.scan_to_params(data) }
+      subject { dummy.scan_to_params(data, ai_classes: {}) }
       let(:data) { '123456' }
 
       it 'returns an empty array' do

@@ -15,6 +15,8 @@ module GS1
     @descendants = []
 
     class << self
+      def generated = false
+
       def inherited(subclass)
         super
         descendants << subclass
