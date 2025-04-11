@@ -15,6 +15,7 @@ require 'gs1/expiration_date'
 require 'gs1/gtin'
 require 'gs1/serial_number'
 require 'gs1/sscc'
+require 'gs1/generated_ai_classes'
 
 require 'gs1/barcode'
 
@@ -51,8 +52,13 @@ module GS1
   end
 
   def self.ai_classes
-    @ai_classes ||= GS1::Record.descendants.each_with_object({}) do |klass, hash|
-      hash[klass.ai] = klass
+    @ai_classes ||= begin
+      GeneratedAIClasses.ai_classes
+      # sort to get non-generated classes first
+      ai_classes = GS1::Record.descendants.sort_by { _1.generated ? 1 : 0 }
+      ai_classes.each_with_object({}) do |klass, hash|
+        hash[klass.ai] ||= klass
+      end
     end
   end
 

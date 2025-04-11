@@ -86,6 +86,18 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/apoex/gs1. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+### Update Known Application Identifiers
+
+1. Download the latest version of the [GS1 syntax dictionary](gs1_syntax_dictionary)
+
+1. Place the syntax dictionary in the
+    [gs1-syntax-dictionary.txt](gs1-syntax-dictionary.txt) file
+
+1. Run the script to generate the AI classes from the syntax
+    dictionary: [`./bin/generate_ai_classes`](bin/generate_ai_classes)
+
+1. Commit all changed files
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
@@ -93,3 +105,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Gs1 project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/apoex/gs1/blob/master/CODE_OF_CONDUCT.md).
+
+[gs1_syntax_dictionary]: https://ref.gs1.org/tools/gs1-barcode-syntax-resource/syntax-dictionary
