@@ -73,8 +73,13 @@ RSpec.describe GS1::Record do
   describe '#==' do
     subject { record }
 
-    let(:record_dummy) { Class.new(GS1::Record) }
-    let(:record_super_dummy) { Class.new(GS1::Record) }
+    let(:record_dummy) do
+      Class.new(GS1::Record) { self::AI = SecureRandom.uuid }
+    end
+
+    let(:record_super_dummy) do
+      Class.new(GS1::Record) { self::AI = SecureRandom.uuid }
+    end
 
     let(:record) { record_dummy.new(data) }
     let(:data) { 'data' }

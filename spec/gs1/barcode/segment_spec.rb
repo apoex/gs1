@@ -8,6 +8,8 @@ RSpec.describe GS1::Barcode::Segment do
 
   let(:ai_class) do
     Class.new(GS1::Record) do
+      self::AI = SecureRandom.uuid
+
       define :length, allowed: 14
       def self.name = '01'
     end

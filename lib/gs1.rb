@@ -1,3 +1,5 @@
+require 'securerandom'
+
 require 'gs1/version'
 
 require 'gs1/ai'
@@ -48,8 +50,10 @@ module GS1
     end
   end
 
-  AI_CLASSES = GS1::Record.descendants.each_with_object({}) do |klass, hash|
-    hash[klass.ai] = klass
+  def self.ai_classes
+    @ai_classes ||= GS1::Record.descendants.each_with_object({}) do |klass, hash|
+      hash[klass.ai] = klass
+    end
   end
 
   module AIDCMarketingLevels

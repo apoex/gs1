@@ -1,6 +1,8 @@
 RSpec.describe GS1::Validations do
   let(:validation_dummy) do
     Class.new(GS1::Record) do
+      self::AI = SecureRandom.uuid
+
       define :check_digit
       define :date
       define :length
