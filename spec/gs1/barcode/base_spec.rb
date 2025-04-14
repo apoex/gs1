@@ -161,7 +161,7 @@ RSpec.describe GS1::Barcode::Base do
 
   describe '.scan_to_params!' do
     context 'with barcode containing unknown application identifier' do
-      subject { dummy.scan_to_params!(data) }
+      subject { dummy.scan_to_params!(data, ai_classes: {}) }
       let(:data) { '123456' }
 
       it 'raises invalid token error' do
