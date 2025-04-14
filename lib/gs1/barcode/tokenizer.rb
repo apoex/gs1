@@ -6,10 +6,11 @@ module GS1
     class Tokenizer
       attr_reader :data, :separator, :params
 
-      def initialize(data, separator: GS1.configuration.barcode_separator)
+      def initialize(data, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
         @data = data
         @separator = separator
         @params = []
+        @ai_classes = ai_classes
       end
 
       def to_params
@@ -21,6 +22,8 @@ module GS1
       end
 
       private
+
+      attr_reader :ai_classes
 
       # rubocop:disable Style/OptionalBooleanParameter
       def segment_to_params(input, bang = false)
@@ -39,7 +42,7 @@ module GS1
       end
 
       def segment_from_input(input, bang)
-        Segment.new(input, separator: separator).tap do |segment|
+        Segment.new(input, separator: separator, ai_classes: ai_classes).tap do |segment|
           segment.validate! if bang
           yield segment if block_given?
         end
