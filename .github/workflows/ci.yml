@@ -13,14 +13,11 @@ jobs:
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
 
-      - name: rubocop
-        uses: reviewdog/action-rubocop@v2
-        with:
-          rubocop_version: gemfile
-          reporter: github-pr-check
+      - name: Install RuboCop
+        run: |
+          rubocop_version="$(ruby -r bundler -e 'puts Bundler.locked_gems.specs.find { _1.name == "rubocop" }.version.version')"
+          gem install "rubocop:$rubocop_version"
 
   test:
     runs-on: ubuntu-latest
