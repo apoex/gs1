@@ -22,7 +22,9 @@ module GS1
 
       private
 
+      # rubocop:disable Style/OptionalBooleanParameter
       def segment_to_params(input, bang = false)
+        # rubocop:enable Style/OptionalBooleanParameter
         segment_from_input(input, bang) do |segment|
           next if segment.to_params.empty?
 

@@ -80,7 +80,7 @@ RSpec.describe GS1::Barcode::Healthcare do
     context 'double scan with self' do
       let(:data) do
         "010880959317102021122286213337\u001E1722013110F1903227" \
-        "010880959317102021122286213337\u001E1722013110F1903227"
+          "010880959317102021122286213337\u001E1722013110F1903227"
       end
 
       it 'is not valid' do

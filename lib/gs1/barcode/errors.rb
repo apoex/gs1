@@ -24,8 +24,8 @@ module GS1
       end
 
       def messages
-        errors.each_with_object({}) do |(attribute_name, errors), hash|
-          hash[attribute_name] = errors.uniq.map(&:human_message)
+        errors.transform_values do |errors|
+          errors.uniq.map(&:human_message)
         end
       end
 

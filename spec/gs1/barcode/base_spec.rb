@@ -1,19 +1,17 @@
 RSpec.describe GS1::Barcode::Base do
-  module GS1
-    module Barcode
-      class Dummy < Base
-        define_records GTIN,
-                       SSCC,
-                       ExpirationDate,
-                       SerialNumber,
-                       Batch,
-                       Content
-      end
+  let(:dummy) do
+    Class.new(GS1::Barcode::Base) do
+      define_records GS1::GTIN,
+                     GS1::SSCC,
+                     GS1::ExpirationDate,
+                     GS1::SerialNumber,
+                     GS1::Batch,
+                     GS1::Content
     end
   end
 
   describe '.from_scan' do
-    subject { GS1::Barcode::Dummy.from_scan(data) }
+    subject { dummy.from_scan(data) }
 
     shared_examples 'sets all attributes from barcode' do
       it 'sets all attributes from barcode' do
@@ -27,10 +25,10 @@ RSpec.describe GS1::Barcode::Base do
 
     let(:data) do
       "#{GS1::GTIN::AI}00000000000000" \
-      "#{GS1::ExpirationDate::AI}181016" \
-      "#{GS1::SerialNumber::AI}zzzzzzz#{separator}" \
-      "#{GS1::Batch::AI}THISISABATCH#{separator}" \
-      "#{GS1::SSCC::AI}123123123123123123"
+        "#{GS1::ExpirationDate::AI}181016" \
+        "#{GS1::SerialNumber::AI}zzzzzzz#{separator}" \
+        "#{GS1::Batch::AI}THISISABATCH#{separator}" \
+        "#{GS1::SSCC::AI}123123123123123123"
     end
 
     context 'default separator' do
@@ -40,7 +38,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'another separator' do
-      subject { GS1::Barcode::Dummy.from_scan(data, separator: separator) }
+      subject { dummy.from_scan(data, separator: separator) }
 
       let(:separator) { '~' }
 
@@ -67,7 +65,7 @@ RSpec.describe GS1::Barcode::Base do
   end
 
   describe '.from_scan!' do
-    subject { GS1::Barcode::Dummy.from_scan!(data) }
+    subject { dummy.from_scan!(data) }
 
     context 'with barcode containing unknown application identifier' do
       let(:data) do
@@ -96,14 +94,14 @@ RSpec.describe GS1::Barcode::Base do
 
     let(:data) do
       "#{GS1::GTIN::AI}00000000000000" \
-      "#{GS1::ExpirationDate::AI}181016" \
-      "#{GS1::SerialNumber::AI}zzzzzzz#{separator}" \
-      "#{GS1::Batch::AI}THISISABATCH#{separator}" \
-      "#{GS1::SSCC::AI}123123123123123123"
+        "#{GS1::ExpirationDate::AI}181016" \
+        "#{GS1::SerialNumber::AI}zzzzzzz#{separator}" \
+        "#{GS1::Batch::AI}THISISABATCH#{separator}" \
+        "#{GS1::SSCC::AI}123123123123123123"
     end
 
     context 'default separator' do
-      subject { GS1::Barcode::Dummy.scan_to_params(data) }
+      subject { dummy.scan_to_params(data) }
 
       let(:separator) { "\u001E" }
 
@@ -111,7 +109,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'another separator' do
-      subject { GS1::Barcode::Dummy.scan_to_params(data, separator: separator) }
+      subject { dummy.scan_to_params(data, separator: separator) }
 
       let(:separator) { '~' }
 
@@ -119,7 +117,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'with barcode containing unknown application identifier' do
-      subject { GS1::Barcode::Dummy.scan_to_params(data) }
+      subject { dummy.scan_to_params(data) }
       let(:data) { '123456' }
 
       it 'returns an empty array' do
@@ -130,7 +128,7 @@ RSpec.describe GS1::Barcode::Base do
 
   describe '.scan_to_params!' do
     context 'with barcode containing unknown application identifier' do
-      subject { GS1::Barcode::Dummy.scan_to_params!(data) }
+      subject { dummy.scan_to_params!(data) }
       let(:data) { '123456' }
 
       it 'raises invalid token error' do
@@ -140,7 +138,7 @@ RSpec.describe GS1::Barcode::Base do
     end
 
     context 'with barcode containing unknown application identifier' do
-      subject { GS1::Barcode::Dummy.scan_to_params!(data) }
+      subject { dummy.scan_to_params!(data) }
       let(:data) { '011231231231231210' }
 
       it 'raises invalid token error' do

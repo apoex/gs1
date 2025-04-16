@@ -1,16 +1,18 @@
 RSpec.describe GS1::Validations::DateValidation do
-  class ValidationDateDummy
-    include GS1::Validations::DateValidation
+  let(:validation_date_dummy) do
+    Class.new do
+      include GS1::Validations::DateValidation
 
-    attr_reader :data, :errors
+      attr_reader :data, :errors
 
-    def initialize(data)
-      @data = data
-      @errors = []
+      def initialize(data)
+        @data = data
+        @errors = []
+      end
     end
   end
 
-  let(:record) { ValidationDateDummy.new(data) }
+  let(:record) { validation_date_dummy.new(data) }
 
   describe '#validate_date' do
     before { record.validate_date }

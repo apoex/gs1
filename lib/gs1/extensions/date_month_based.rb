@@ -34,7 +34,7 @@ module GS1
         if date.respond_to?(:strftime)
           super(date.strftime('%y%m%d'))
         else
-          super(date)
+          super
         end
       end
 
