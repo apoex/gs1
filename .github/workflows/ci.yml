@@ -67,14 +67,14 @@ jobs:
         uses: sean0x42/markdown-extract@v2
         id: extract_changelog
         with:
-         file: changelog.md
+         file: CHANGELOG.md
          pattern: '\[${{ steps.version.outputs.version }}\].+'
          no-print-matched-heading: true
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Xmlsec ${{ steps.version.outputs.version }}
+          name: GS1 ${{ steps.version.outputs.version }}
           draft: true
           body: ${{ steps.extract_changelog.outputs.markdown }}
         env:
