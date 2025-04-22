@@ -78,13 +78,55 @@ GS1::Barcode::Healthcare.from_scan("01034531200000111719112510ABCD1234\u001E2110
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run
+`rake spec` to run the tests. You can also run `bin/console` for an interactive
+prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To
+release a new version, update the version number in `version.rb`, and then run
+`bundle exec rake release`, which will create a git tag for the version, push
+git commits and tags, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
+
+### Creating a Release
+
+#### Update the Changelog
+
+1. Rename the [Unreleased] section to match the version that is being released
+1. Add the current date in the section from previous step. See existing entries
+1. Add a new section for the `Unreleased` section at the top
+1. Add a new reference link for the new section at the bottom of the changelog
+1. Update the `Unreleased` reference link at the bottom of the changelog
+
+#### Publish New Version of Gem
+
+To publish a new version of this gem, follow the steps below:
+
+1. Update the version in the [version.rb](lib/gs1/version.rb) file
+1. Run `bundle` to update Gemfile.lock
+1. Commit and push the changes
+
+1. Run `rake release:initiate`. This initiates a new release by creating a Git
+    tag with the version specified in [version.rb](lib/gs1/version.rb). It will
+    then push the Git tag. This will trigger a job in the CI pipeline, which
+    will build the gem and publish it to https://rubygems.org. It will also
+    create a GitHub Release, in draft mode
+
+1. Check the GitHub Release and then publish it
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/apoex/gs1. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/apoex/gs1. This project is intended to be a safe, welcoming
+space for collaboration, and contributors are expected to adhere to the
+[Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+### Changelog
+
+The changelog is maintained in the [CHANGELOG.md](CHANGELOG.md) file, following
+the [Keep a Changelog] format. The changelog is updated incrementally. That is,
+for every new feature or bugfix, add an entry to the changelog. New entries are
+added below the [Unreleased] section, with an appropriate sub header.
 
 ### Update Known Application Identifiers
 
@@ -100,10 +142,15 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/apoex/
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT
+License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
-Everyone interacting in the Gs1 project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/apoex/gs1/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Gs1 project’s codebases, issue trackers, chat rooms
+and mailing lists is expected to follow the [code of
+conduct](https://github.com/apoex/gs1/blob/master/CODE_OF_CONDUCT.md).
 
 [gs1_syntax_dictionary]: https://ref.gs1.org/tools/gs1-barcode-syntax-resource/syntax-dictionary
+[Keep a Changelog]: https://keepachangelog.com/en/1.1.0
+[Unreleased]: https://github.com/apoex/gs1/blob/master/CHANGELOG.md#unreleased

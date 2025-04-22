@@ -44,14 +44,22 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: [test]
     timeout-minutes: 5
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
       - name: Extract Version
         id: version
-        if: startsWith(github.ref, 'refs/tags/v')
         run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
 
       - name: Extract changelog
@@ -63,7 +71,6 @@ jobs:
          no-print-matched-heading: true
 
       - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/v') && contains(github.ref, '.')
         uses: softprops/action-gh-release@v2
         with:
           name: Xmlsec ${{ steps.version.outputs.version }}
@@ -71,3 +78,6 @@ jobs:
           body: ${{ steps.extract_changelog.outputs.markdown }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Gem
+        uses: rubygems/release-gem@v1
