@@ -6,9 +6,11 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gemspec
 
 gem 'bundler'
-gem 'byebug'
+gem 'pry'
+gem 'pry-byebug'
 gem 'rake'
 gem 'rb-readline'
 gem 'rspec'
 gem 'rubocop'
 gem 'simplecov'
+gem 'yard'

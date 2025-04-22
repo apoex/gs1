@@ -5,15 +5,16 @@ module GS1
     class Base
       include Definitions
 
-      def initialize(options = {})
-        options.each do |(attribute_name, data)|
-          validate_attribute_data(attribute_name)
-          validate_attribute_record(attribute_name) do |record|
-            instance_variable_set("@#{attribute_name}", record.new(data))
+      def initialize(attributes = {}, options = {})
+        attribute_validator = options[:attribute_validator] || AttributeValidator.new
+        attributes.each do |(name, data)|
+          attribute_validator.validate_data(self, name)
+          attribute_validator.validate_record(self, name) do |record|
+            instance_variable_set("@#{name}", record.new(data))
           end
         end
 
-        @params_order = options.to_h.keys
+        @params_order = attributes.to_h.keys
       end
 
       def errors
@@ -21,20 +22,33 @@ module GS1
       end
 
       class << self
-        def from_scan!(barcode, separator: GS1.configuration.barcode_separator)
-          new(scan_to_params!(barcode, separator: separator))
+        def for(attributes, configuration:)
+          attribute_validator = AttributeValidator.for(configuration: configuration)
+          new(attributes, attribute_validator: attribute_validator)
         end
 
-        def from_scan(barcode, separator: GS1.configuration.barcode_separator)
-          new(scan_to_params(barcode, separator: separator))
+        def from_scan!(barcode, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
+          self.for(
+            scan_to_params!(barcode, separator: separator, ai_classes: ai_classes),
+            configuration: GS1.configuration
+          )
         end
 
-        def scan_to_params!(barcode, separator: GS1.configuration.barcode_separator)
-          Tokenizer.new(barcode, separator: separator).to_params!
+        def from_scan(barcode, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
+          self.for(
+            scan_to_params(barcode, separator: separator, ai_classes: ai_classes),
+            configuration: GS1.configuration
+          )
         end
 
-        def scan_to_params(barcode, separator: GS1.configuration.barcode_separator)
-          Tokenizer.new(barcode, separator: separator).to_params
+        def scan_to_params!(barcode, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
+          Tokenizer.new(barcode, separator: separator, ai_classes: ai_classes)
+                   .to_params!
+        end
+
+        def scan_to_params(barcode, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
+          Tokenizer.new(barcode, separator: separator, ai_classes: ai_classes)
+                   .to_params
         end
       end
     end

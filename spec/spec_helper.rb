@@ -1,6 +1,7 @@
 require 'bundler/setup'
 
-require 'byebug'
+require 'pry'
+require 'pry-byebug'
 require 'simplecov'
 
 require 'support/normalization_helper'
@@ -28,4 +29,7 @@ RSpec.configure do |config|
   config.order = :random
 
   Kernel.srand config.seed
+
+  # Eagerly load AI classes so new classes during the test doesn't affect this.
+  config.before(:suite) { GS1.ai_classes }
 end

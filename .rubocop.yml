@@ -1,6 +1,8 @@
 AllCops:
   TargetRubyVersion: 3.0
   NewCops: enable
+  Exclude:
+    - lib/gs1/generated_ai_classes.rb
 
 Metrics/BlockLength:
   Exclude:
@@ -11,4 +13,7 @@ Layout/LineLength:
   Max: 120
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
   Enabled: false

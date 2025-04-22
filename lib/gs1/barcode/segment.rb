@@ -5,9 +5,10 @@ module GS1
     class Segment
       attr_reader :data, :separator
 
-      def initialize(data, separator: GS1.configuration.barcode_separator)
+      def initialize(data, separator: GS1.configuration.barcode_separator, ai_classes: GS1.ai_classes)
         @data = data.to_s.chars
         @separator = separator
+        @ai_classes = ai_classes
       end
 
       def to_params
@@ -66,6 +67,8 @@ module GS1
 
       private
 
+      attr_reader :ai_classes
+
       def ai_variants
         @ai_variants ||= []
       end
@@ -75,7 +78,7 @@ module GS1
 
         ai_variants << (ai_variants.last.to_s + data.shift(shifts).join)
 
-        AI_CLASSES[ai_variants.last]
+        ai_classes[ai_variants.last]
       end
 
       def can_shift_ai_data?(shifts)

@@ -54,13 +54,23 @@ RSpec.describe GS1::Barcode::Healthcare do
     context 'double scan with SSCC' do
       let(:data) { "00373322680596223355010880959317002021122286213337\u001E1722013110F1903227" }
 
-      it 'is not valid' do
-        expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to eq(['Unknown attribute sscc'])
-        expect(subject.gtin).to eq(GS1::GTIN.new('08809593170020'))
-        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
-        expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
-        expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+      context 'when configured to not ignore extra barcode elements' do
+        around do |spec|
+          old_value = GS1.configuration.ignore_extra_barcode_elements
+          GS1.configuration.ignore_extra_barcode_elements = false
+          spec.run
+        ensure
+          GS1.configuration.ignore_extra_barcode_elements = old_value
+        end
+
+        it 'is not valid' do
+          expect(subject).not_to be_valid
+          expect(subject.errors.full_messages).to eq(['Unknown attribute sscc'])
+          expect(subject.gtin).to eq(GS1::GTIN.new('08809593170020'))
+          expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
+          expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
+          expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+        end
       end
     end
 
@@ -83,18 +93,28 @@ RSpec.describe GS1::Barcode::Healthcare do
           "010880959317102021122286213337\u001E1722013110F1903227"
       end
 
-      it 'is not valid' do
-        expect(subject).not_to be_valid
-        expect(subject.errors.messages).to eq(batch: ['Already defined'],
-                                              expiration_date: ['Already defined'],
-                                              gtin: ['Invalid'])
-        expect(subject.errors.full_messages).to eq(['Already defined batch',
-                                                    'Already defined expiration date',
-                                                    'Invalid gtin'])
-        expect(subject.gtin).to eq(GS1::GTIN.new('08809593171020'))
-        expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
-        expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
-        expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+      context 'when configured to not ignore extra barcode elements' do
+        around do |spec|
+          old_value = GS1.configuration.ignore_extra_barcode_elements
+          GS1.configuration.ignore_extra_barcode_elements = false
+          spec.run
+        ensure
+          GS1.configuration.ignore_extra_barcode_elements = old_value
+        end
+
+        it 'is not valid' do
+          expect(subject).not_to be_valid
+          expect(subject.errors.messages).to eq(batch: ['Already defined'],
+                                                expiration_date: ['Already defined'],
+                                                gtin: ['Invalid'])
+          expect(subject.errors.full_messages).to eq(['Already defined batch',
+                                                      'Already defined expiration date',
+                                                      'Invalid gtin'])
+          expect(subject.gtin).to eq(GS1::GTIN.new('08809593171020'))
+          expect(subject.expiration_date).to eq(GS1::ExpirationDate.new('220131'))
+          expect(subject.batch).to eq(GS1::Batch.new('F1903227'))
+          expect(subject.serial_number).to eq(GS1::SerialNumber.new('122286213337'))
+        end
       end
     end
   end

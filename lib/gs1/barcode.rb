@@ -1,3 +1,6 @@
+require 'gs1/barcode/attribute_validator'
+require 'gs1/barcode/attribute_validators/record_validator'
+require 'gs1/barcode/attribute_validators/ignoring_record_validator'
 require 'gs1/barcode/definitions'
 require 'gs1/barcode/error'
 require 'gs1/barcode/errors'
