@@ -121,6 +121,13 @@ https://github.com/apoex/gs1. This project is intended to be a safe, welcoming
 space for collaboration, and contributors are expected to adhere to the
 [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+### Changelog
+
+The changelog is maintained in the [CHANGELOG.md](CHANGELOG.md) file, following
+the [Keep a Changelog] format. The changelog is updated incrementally. That is,
+for every new feature or bugfix, add an entry to the changelog. New entries are
+added below the [Unreleased] section, with an appropriate sub header.
+
 ### Update Known Application Identifiers
 
 1. Download the latest version of the [GS1 syntax dictionary](gs1_syntax_dictionary)
@@ -145,3 +152,5 @@ and mailing lists is expected to follow the [code of
 conduct](https://github.com/apoex/gs1/blob/master/CODE_OF_CONDUCT.md).
 
 [gs1_syntax_dictionary]: https://ref.gs1.org/tools/gs1-barcode-syntax-resource/syntax-dictionary
+[Keep a Changelog]: https://keepachangelog.com/en/1.1.0
+[Unreleased]: https://github.com/apoex/gs1/blob/master/CHANGELOG.md#unreleased
