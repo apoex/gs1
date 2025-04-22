@@ -88,6 +88,32 @@ release a new version, update the version number in `version.rb`, and then run
 git commits and tags, and push the `.gem` file to
 [rubygems.org](https://rubygems.org).
 
+### Creating a Release
+
+#### Update the Changelog
+
+1. Rename the [Unreleased] section to match the version that is being released
+1. Add the current date in the section from previous step. See existing entries
+1. Add a new section for the `Unreleased` section at the top
+1. Add a new reference link for the new section at the bottom of the changelog
+1. Update the `Unreleased` reference link at the bottom of the changelog
+
+#### Publish New Version of Gem
+
+To publish a new version of this gem, follow the steps below:
+
+1. Update the version in the [version.rb](lib/gs1/version.rb) file
+1. Run `bundle` to update Gemfile.lock
+1. Commit and push the changes
+
+1. Run `rake release:initiate`. This initiates a new release by creating a Git
+    tag with the version specified in [version.rb](lib/gs1/version.rb). It will
+    then push the Git tag. This will trigger a job in the CI pipeline, which
+    will build the gem and publish it to https://rubygems.org. It will also
+    create a GitHub Release, in draft mode
+
+1. Check the GitHub Release and then publish it
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
