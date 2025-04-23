@@ -57,6 +57,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ruby
+          bundler: latest
 
       - name: Extract Version
         id: version
@@ -79,5 +80,35 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish Gem
-        uses: rubygems/release-gem@v1
+      # Publish Gem.
+      #
+      # The following steps are copied from https://github.com/rubygems/release-gem/blob/a25424ba2ba8b387abc8ef40807c2c85b96cbe32/action.yml#L26-L44.
+      # Due to some incompatibilities the above action cannot be used. We need to
+      # support some internal applications that uses older versions of Ruby.
+      # Because of that this repository is configured (.ruby-version,
+      # Gemfile.lock) to use the oldest version necessary of Ruby and Bundler.
+      # This causes two issues:
+      #   * Because the `rubygems/release-gem` action uses the `gem exec`
+      #     command, which is fairly new addition, we need to use a version of
+      #     Ruby which is newer than configured in this repository
+      #
+      #  *  When using the newer version of Ruby the version of Bundler
+      #     configured in `Gemfile.lock` is not compatible with the newer version
+      #     of Ruby. This causes `bundle exec` to fail, which the
+      #     `rubygems/release-gem` action uses to run the `release` Rake task
+      - name: Set remote URL
+        run: |
+          # Attribute commits to the last committer on HEAD
+          git config --global user.email "$(git log -1 --pretty=format:'%ae')"
+          git config --global user.name "$(git log -1 --pretty=format:'%an')"
+          git remote set-url origin "https://x-access-token:${{ github.token }}@github.com/$GITHUB_REPOSITORY"
+        shell: bash
+      - name: Configure trusted publishing credentials
+        uses: rubygems/configure-rubygems-credentials@v1.0.0
+      - name: Run release rake task
+        run: rake release
+        shell: bash
+      - name: Wait for release to propagate
+        if: ${{ inputs.await-release == 'true' }}
+        run: gem exec rubygems-await pkg/*.gem
+        shell: bash

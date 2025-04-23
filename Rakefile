@@ -1,5 +1,4 @@
 require 'bundler/gem_tasks'
-require 'rspec/core/rake_task'
 
 class Tasks < Bundler::GemHelper
   def install
@@ -8,9 +7,5 @@ class Tasks < Bundler::GemHelper
     end
   end
 end
-
-RSpec::Core::RakeTask.new(:spec)
-
-task default: :spec
 
 Tasks.new.install
