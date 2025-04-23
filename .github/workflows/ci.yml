@@ -109,6 +109,5 @@ jobs:
         run: rake release
         shell: bash
       - name: Wait for release to propagate
-        if: ${{ inputs.await-release == 'true' }}
         run: gem exec rubygems-await pkg/*.gem
         shell: bash

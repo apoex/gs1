@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2025-04-23
+### Fixed
+- Fix the CI release pipeline
+
 ## [2.0.1] - 2025-04-23
 ### Fixed
 - Fix the CI release pipeline
@@ -51,8 +55,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix `nil` argument for barcode
 
-[Unreleased]: https://github.com/apoex/gs1/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/apoex/gs1/compare/v2.0.2...HEAD
 
+[2.0.2]: https://github.com/apoex/gs1/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/apoex/gs1/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/apoex/gs1/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/apoex/gs1/compare/v1.0.0...v1.1.0
