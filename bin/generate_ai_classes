@@ -83,7 +83,10 @@ module GS1
       entry.separator_required ? "define :separator\n" : ''
     end
 
-    def name(entry) = entry.title.gsub(/[^\w]+/, '_')
+    def name(entry)
+      name = entry.title.gsub(/[^\w]+/, '_')
+      name.match?(/^\d/) ? '_' + name : name
+    end
   end
 end
 

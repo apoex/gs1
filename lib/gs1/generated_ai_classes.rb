@@ -3845,7 +3845,7 @@ module GS1
       Class.new(Record) do
         define :length, allowed: 1..70
         define :separator
-        def self.name = '8110'
+        def self.name = '_8110'
         def self.ai = '8110'
         def self.generated = true
       end
@@ -3861,7 +3861,7 @@ module GS1
       Class.new(Record) do
         define :length, allowed: 1..70
         define :separator
-        def self.name = '8112'
+        def self.name = '_8112'
         def self.ai = '8112'
         def self.generated = true
       end
