@@ -120,6 +120,8 @@ RSpec.describe GS1::Barcode::Healthcare do
   end
 
   describe '#to_s' do
+    subject { described_class.from_scan(example_scan, separator: separator) }
+
     let(:separator) { "\u001E" }
 
     let(:level) { GS1::AIDCMarketingLevels::ENHANCED }
@@ -186,8 +188,6 @@ RSpec.describe GS1::Barcode::Healthcare do
       let(:example_scan) { "01000000123123131718100310123123123\u001E21123123" }
       let(:rescan) { described_class.from_scan(subject.to_s) }
 
-      subject { described_class.from_scan(example_scan) }
-
       it 'reproduces the input' do
         expect(subject.to_s).to eq example_scan
       end
@@ -205,8 +205,6 @@ RSpec.describe GS1::Barcode::Healthcare do
     context 'when 01000000123123131718100310123123123' do
       let(:example_scan) { '01000000123123131718100310123123123' }
 
-      subject { described_class.from_scan(example_scan) }
-
       it 'reproduces the input' do
         expect(subject.to_s).to eq example_scan
       end
@@ -215,8 +213,6 @@ RSpec.describe GS1::Barcode::Healthcare do
     context "when 010000001231231310123123123\u001E17181003" do
       let(:example_scan) { "010000001231231310123123123\u001E17181003" }
 
-      subject { described_class.from_scan(example_scan) }
-
       it 'reproduces the input' do
         expect(subject.to_s).to eq example_scan
       end
@@ -224,8 +220,6 @@ RSpec.describe GS1::Barcode::Healthcare do
 
     context 'when 0100000012312313' do
       let(:example_scan) { '0100000012312313' }
-
-      subject { described_class.from_scan(example_scan) }
 
       it 'reproduces the input' do
         expect(subject.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
