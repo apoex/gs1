@@ -227,6 +227,14 @@ RSpec.describe GS1::Barcode::Healthcare do
         expect(scanned_barcode.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
       end
     end
+
+    context 'when the barcode contains ignored element strings' do
+      let(:example_scan) { "0100000000000017101#{separator}11000000211#{separator}17250512" }
+
+      it 'reproduces the input without the ignored element strings' do
+        expect(scanned_barcode.to_s).to eq("0100000000000017101#{separator}211#{separator}17250512")
+      end
+    end
   end
 
   describe '#valid?' do

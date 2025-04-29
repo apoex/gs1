@@ -6,15 +6,15 @@ module GS1
       include Definitions
 
       def initialize(attributes = {}, options = {})
+        @params_order = []
         attribute_validator = options[:attribute_validator] || AttributeValidator.new
         attributes.each do |(name, data)|
           attribute_validator.validate_data(self, name)
           attribute_validator.validate_record(self, name) do |record|
             instance_variable_set("@#{name}", record.new(data))
+            @params_order << name
           end
         end
-
-        @params_order = attributes.to_h.keys
       end
 
       def errors

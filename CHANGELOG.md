@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Fix: `@8110' is not allowed as an instance variable name
+- Fix NoMethodError in `GS1::Barcode::Healthcare#to_s`
 
 ## [2.0.2] - 2025-04-23
 ### Fixed
