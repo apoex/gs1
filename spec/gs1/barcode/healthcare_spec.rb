@@ -120,7 +120,9 @@ RSpec.describe GS1::Barcode::Healthcare do
   end
 
   describe '#to_s' do
-    subject { described_class.from_scan(example_scan, separator: separator) }
+    subject(:scanned_barcode) do
+      described_class.from_scan(example_scan, separator: separator)
+    end
 
     let(:separator) { "\u001E" }
 
@@ -189,16 +191,16 @@ RSpec.describe GS1::Barcode::Healthcare do
       let(:rescan) { described_class.from_scan(subject.to_s) }
 
       it 'reproduces the input' do
-        expect(subject.to_s).to eq example_scan
+        expect(scanned_barcode.to_s).to eq example_scan
       end
 
       it 'is reparseable', :aggregate_failures do
         expect { rescan }.not_to raise_error
 
-        expect(rescan.gtin).to eq subject.gtin
-        expect(rescan.batch).to eq subject.batch
-        expect(rescan.expiration_date).to eq subject.expiration_date
-        expect(rescan.serial_number).to eq subject.serial_number
+        expect(rescan.gtin).to eq scanned_barcode.gtin
+        expect(rescan.batch).to eq scanned_barcode.batch
+        expect(rescan.expiration_date).to eq scanned_barcode.expiration_date
+        expect(rescan.serial_number).to eq scanned_barcode.serial_number
       end
     end
 
@@ -206,7 +208,7 @@ RSpec.describe GS1::Barcode::Healthcare do
       let(:example_scan) { '01000000123123131718100310123123123' }
 
       it 'reproduces the input' do
-        expect(subject.to_s).to eq example_scan
+        expect(scanned_barcode.to_s).to eq example_scan
       end
     end
 
@@ -214,7 +216,7 @@ RSpec.describe GS1::Barcode::Healthcare do
       let(:example_scan) { "010000001231231310123123123\u001E17181003" }
 
       it 'reproduces the input' do
-        expect(subject.to_s).to eq example_scan
+        expect(scanned_barcode.to_s).to eq example_scan
       end
     end
 
@@ -222,7 +224,7 @@ RSpec.describe GS1::Barcode::Healthcare do
       let(:example_scan) { '0100000012312313' }
 
       it 'reproduces the input' do
-        expect(subject.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
+        expect(scanned_barcode.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
       end
     end
   end
