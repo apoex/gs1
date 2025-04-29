@@ -139,7 +139,7 @@ RSpec.describe GS1::Barcode::Healthcare do
         let(:expected_batch_part) { "#{GS1::Batch::AI}#{batch_data}" }
         let(:expected_serial_number_part) { "#{GS1::SerialNumber::AI}#{serial_number_data}" }
 
-        it 'returns all attributes concatinated in same order as params' do
+        it 'returns all attributes concatenated in same order as params' do
           is_expected.to eq(expected_gtin_part +
                             expected_batch_part + separator +
                             expected_expiration_date_part +
@@ -154,7 +154,7 @@ RSpec.describe GS1::Barcode::Healthcare do
               expiration_date: expiration_date_data }
           end
 
-          it 'returns all attributes concatinated in same order as params' do
+          it 'returns all attributes concatenated in same order as params' do
             is_expected.to eq(expected_gtin_part +
                               expected_batch_part + separator +
                               expected_serial_number_part + separator +
