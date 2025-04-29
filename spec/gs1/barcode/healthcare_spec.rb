@@ -120,6 +120,10 @@ RSpec.describe GS1::Barcode::Healthcare do
   end
 
   describe '#to_s' do
+    subject(:scanned_barcode) do
+      described_class.from_scan(example_scan, separator: separator)
+    end
+
     let(:separator) { "\u001E" }
 
     let(:level) { GS1::AIDCMarketingLevels::ENHANCED }
@@ -139,7 +143,7 @@ RSpec.describe GS1::Barcode::Healthcare do
         let(:expected_batch_part) { "#{GS1::Batch::AI}#{batch_data}" }
         let(:expected_serial_number_part) { "#{GS1::SerialNumber::AI}#{serial_number_data}" }
 
-        it 'returns all attributes concatinated in same order as params' do
+        it 'returns all attributes concatenated in same order as params' do
           is_expected.to eq(expected_gtin_part +
                             expected_batch_part + separator +
                             expected_expiration_date_part +
@@ -154,7 +158,7 @@ RSpec.describe GS1::Barcode::Healthcare do
               expiration_date: expiration_date_data }
           end
 
-          it 'returns all attributes concatinated in same order as params' do
+          it 'returns all attributes concatenated in same order as params' do
             is_expected.to eq(expected_gtin_part +
                               expected_batch_part + separator +
                               expected_serial_number_part + separator +
@@ -186,52 +190,49 @@ RSpec.describe GS1::Barcode::Healthcare do
       let(:example_scan) { "01000000123123131718100310123123123\u001E21123123" }
       let(:rescan) { described_class.from_scan(subject.to_s) }
 
-      subject { described_class.from_scan(example_scan) }
-
       it 'reproduces the input' do
-        expect(subject.to_s).to eq example_scan
+        expect(scanned_barcode.to_s).to eq example_scan
       end
 
       it 'is reparseable', :aggregate_failures do
         expect { rescan }.not_to raise_error
 
-        expect(rescan.gtin).to eq subject.gtin
-        expect(rescan.batch).to eq subject.batch
-        expect(rescan.expiration_date).to eq subject.expiration_date
-        expect(rescan.serial_number).to eq subject.serial_number
+        expect(rescan.gtin).to eq scanned_barcode.gtin
+        expect(rescan.batch).to eq scanned_barcode.batch
+        expect(rescan.expiration_date).to eq scanned_barcode.expiration_date
+        expect(rescan.serial_number).to eq scanned_barcode.serial_number
       end
     end
 
     context 'when 01000000123123131718100310123123123' do
       let(:example_scan) { '01000000123123131718100310123123123' }
-      let(:rescan) { described_class.from_scan(subject.to_s) }
-
-      subject { described_class.from_scan(example_scan) }
 
       it 'reproduces the input' do
-        expect(subject.to_s).to eq example_scan
+        expect(scanned_barcode.to_s).to eq example_scan
       end
     end
 
     context "when 010000001231231310123123123\u001E17181003" do
       let(:example_scan) { "010000001231231310123123123\u001E17181003" }
-      let(:rescan) { described_class.from_scan(subject.to_s) }
-
-      subject { described_class.from_scan(example_scan) }
 
       it 'reproduces the input' do
-        expect(subject.to_s).to eq example_scan
+        expect(scanned_barcode.to_s).to eq example_scan
       end
     end
 
     context 'when 0100000012312313' do
       let(:example_scan) { '0100000012312313' }
-      let(:rescan) { described_class.from_scan(subject.to_s) }
-
-      subject { described_class.from_scan(example_scan) }
 
       it 'reproduces the input' do
-        expect(subject.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
+        expect(scanned_barcode.to_s(level: GS1::AIDCMarketingLevels::MINIMUM)).to eq example_scan
+      end
+    end
+
+    context 'when the barcode contains ignored element strings' do
+      let(:example_scan) { "0100000000000017101#{separator}11000000211#{separator}17250512" }
+
+      it 'reproduces the input without the ignored element strings' do
+        expect(scanned_barcode.to_s).to eq("0100000000000017101#{separator}211#{separator}17250512")
       end
     end
   end
